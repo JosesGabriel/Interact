@@ -1,4 +1,4 @@
 [submodule "arbitrage"]
 	path = arbitrage
-	url = git@gitlab.com:arbitrage-ph/php/submodules/arbitrage.git
+	url = https://gitlab.com/arbitrage-ph/php/submodules/arbitrage.git
 	branch = master
