@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return [
-        'status' => 301,
-        'title' => 'Unauthorized access.',
+        'status' => 401,
+        'message' => 'Unauthorized access.',
     ];
-});
+})->name('unauthorized');
