@@ -12,5 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return [
+        'status' => 301,
+        'title' => 'Unauthorized access.',
+    ];
 });
