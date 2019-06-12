@@ -12,5 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return [
+        'status' => 401,
+        'message' => 'Unauthorized access.',
+    ];
+})->name('unauthorized');
