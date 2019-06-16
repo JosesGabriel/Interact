@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
-class BaseService
+use Arbitrage\Abstracts\Services\Service as AbstractService;
+
+class BaseService extends AbstractService
 {
 }
