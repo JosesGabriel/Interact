@@ -27,7 +27,7 @@ class SamplesController extends BaseController
     {
         $data = $this->sample_service->fetch($request->all());
 
-        return response()->json($data);
+        return $this->absorb($data)->respond();
     }
 
     /**
@@ -41,6 +41,6 @@ class SamplesController extends BaseController
         // call up the service that will handle the creation logic
         $data = $this->sample_service->make($request->all());
 
-        return response()->json($data);
+        return $this->absorb($data)->respond();
     }
 }

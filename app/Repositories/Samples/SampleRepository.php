@@ -3,31 +3,67 @@
 namespace App\Repositories\Samples;
 
 use App\Interfaces\Repositories\SampleRepositoryInterface;
+use App\Repositories\BaseRepository;
 
-class SampleRepository implements SampleRepositoryInterface
+class SampleRepository extends BaseRepository
 {
-    public function create(array $data) : array
+    public function create(array $data) : object
     {
-        return [];
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully created.',
+            'meta' => [],
+            'data' => [
+                'sample' => [],
+            ],
+        ]);
     }
 
-    public function fetch(array $data) : array
+    public function fetch(array $data) : object
     {
-        return [];
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetchd.',
+            'meta' => [],
+            'data' => [
+                'sample' => [],
+            ],
+        ]);
     }
 
-    public function delete(int $id) : array
+    public function delete(int $id) : object
     {
-        return [];
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully deleted.',
+            'meta' => [],
+            'data' => [
+                'sample' => [],
+            ],
+        ]);
     }
 
-    public function search(array $data) : array
+    public function search(array $data) : object
     {
-        return [];
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully searchd.',
+            'meta' => [],
+            'data' => [
+                'sample' => [],
+            ],
+        ]);
     }
 
-    public function update(array $data) : array
+    public function update(array $data) : object
     {
-        return [];
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully updated.',
+            'meta' => [],
+            'data' => [
+                'sample' => [],
+            ],
+        ]);
     }
 }

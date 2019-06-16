@@ -3,8 +3,9 @@
 namespace App\Services\Samples;
 
 use App\Repositories\Samples\SampleRepository;
+use App\Services\BaseService;
 
-class SampleService
+class SampleService extends BaseService
 {
     protected
         $sample_repo;
@@ -26,7 +27,7 @@ class SampleService
 
         $result = $this->sample_repo->fetch($data);
 
-        return $result;
+        return $this->absorb($result);
     }
 
     /**
@@ -52,6 +53,6 @@ class SampleService
         // * store it in our database
         $result = $this->sample_repo->create($data);
 
-        return $result;
+        return $this->absorb($result);
     }
 }
