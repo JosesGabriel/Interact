@@ -7,7 +7,7 @@ use App\Repositories\BaseRepository;
 
 class SampleRepository extends BaseRepository
 {
-    public function create(array $data) : object
+    public function create(array $data)
     {
         return $this->setResponse([
             'status' => 200,
@@ -19,7 +19,7 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
-    public function fetch(array $data) : object
+    public function fetch(array $data)
     {
         return $this->setResponse([
             'status' => 200,
@@ -31,7 +31,7 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
-    public function delete(int $id) : object
+    public function delete(int $id)
     {
         return $this->setResponse([
             'status' => 200,
@@ -43,7 +43,7 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
-    public function search(array $data) : object
+    public function search(array $data)
     {
         return $this->setResponse([
             'status' => 200,
@@ -55,7 +55,7 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
-    public function update(array $data) : object
+    public function update(int $id, array $data)
     {
         return $this->setResponse([
             'status' => 200,
