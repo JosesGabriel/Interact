@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Sample;
+namespace App\Data\Models\Sample;
 
-use App\Models\BaseModel;
+use App\Data\Models\BaseModel;
 
 class Sample extends BaseModel
 {

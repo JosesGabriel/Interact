@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Samples;
+namespace App\Data\Repositories\Samples;
 
 use App\Interfaces\Repositories\SampleRepositoryInterface;
 use App\Repositories\BaseRepository;

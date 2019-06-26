@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Data\Repositories;
 
 use Arbitrage\Abstracts\Repositories\Repository as AbstractRepository;
 
