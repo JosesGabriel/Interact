@@ -29,10 +29,10 @@ class SampleRepository extends BaseRepository
     }
 
     /**
-     * @param array $data
+     * @param mixed $id
      * @return SampleRepository
      */
-    public function fetch(array $data)
+    public function fetch($id)
     {
         return $this->setResponse([
             'status' => 200,
@@ -45,10 +45,10 @@ class SampleRepository extends BaseRepository
     }
 
     /**
-     * @param int $id
+     * @param mixed $id
      * @return SampleRepository
      */
-    public function delete(int $id)
+    public function delete($id)
     {
         return $this->setResponse([
             'status' => 200,
@@ -77,11 +77,11 @@ class SampleRepository extends BaseRepository
     }
 
     /**
-     * @param int $id
+     * @param mixed $id
      * @param array $data
      * @return SampleRepository
      */
-    public function update(int $id, array $data)
+    public function update($id, array $data)
     {
         return $this->setResponse([
             'status' => 200,
