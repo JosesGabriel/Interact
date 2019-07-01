@@ -5,11 +5,22 @@ namespace App\Services\Samples;
 use App\Repositories\Samples\SampleRepository;
 use App\Services\BaseService;
 
+/**
+ * Class SampleService
+ *
+ * @package App\Services\Samples
+ */
 class SampleService extends BaseService
 {
-    protected
-        $sample_repo;
+    /**
+     * @var SampleRepository
+     */
+    protected $sample_repo;
 
+    /**
+     * SampleService constructor.
+     * @param SampleRepository $sampleRepository
+     */
     public function __construct(
         SampleRepository $sampleRepository
     ) {
@@ -17,8 +28,8 @@ class SampleService extends BaseService
     }
 
     /**
-     * @param Array $data
-     * @return Array
+     * @param array $data
+     * @return \Arbitrage\Http\Response\Self
      */
     public function fetch($data = [])
     {
@@ -31,8 +42,8 @@ class SampleService extends BaseService
     }
 
     /**
-     * @param Array $data
-     * @return Array
+     * @param array $data
+     * @return \Arbitrage\Http\Response\Self
      */
     public function make($data = [])
     {

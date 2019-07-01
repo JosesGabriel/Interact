@@ -5,8 +5,17 @@ namespace App\Data\Repositories\Samples;
 use App\Interfaces\Repositories\SampleRepositoryInterface;
 use App\Repositories\BaseRepository;
 
+/**
+ * Class SampleRepository
+ *
+ * @package App\Data\Repositories\Samples
+ */
 class SampleRepository extends BaseRepository
 {
+    /**
+     * @param array $data
+     * @return SampleRepository
+     */
     public function create(array $data)
     {
         return $this->setResponse([
@@ -19,7 +28,11 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
-    public function fetch(array $data)
+    /**
+     * @param mixed $id
+     * @return SampleRepository
+     */
+    public function fetch($id)
     {
         return $this->setResponse([
             'status' => 200,
@@ -31,7 +44,11 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
-    public function delete(int $id)
+    /**
+     * @param mixed $id
+     * @return SampleRepository
+     */
+    public function delete($id)
     {
         return $this->setResponse([
             'status' => 200,
@@ -43,6 +60,10 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
+    /**
+     * @param array $data
+     * @return SampleRepository
+     */
     public function search(array $data)
     {
         return $this->setResponse([
@@ -55,7 +76,12 @@ class SampleRepository extends BaseRepository
         ]);
     }
 
-    public function update(int $id, array $data)
+    /**
+     * @param mixed $id
+     * @param array $data
+     * @return SampleRepository
+     */
+    public function update($id, array $data)
     {
         return $this->setResponse([
             'status' => 200,

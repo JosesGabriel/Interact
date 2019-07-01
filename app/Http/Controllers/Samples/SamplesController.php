@@ -6,11 +6,22 @@ use App\Http\Controllers\BaseController;
 use App\Services\Samples\SampleService;
 use Illuminate\Http\Request;
 
+/**
+ * Class SamplesController
+ *
+ * @package App\Http\Controllers\Samples
+ */
 class SamplesController extends BaseController
 {
-    protected
-        $sample_service;
+    /**
+     * @var SampleService
+     */
+    protected $sample_service;
 
+    /**
+     * SamplesController constructor.
+     * @param SampleService $sampleService
+     */
     public function __construct(
         SampleService $sampleService
     ) {
@@ -20,8 +31,8 @@ class SamplesController extends BaseController
     /**
      * Fetches all sample data
      *
-     * @param \Illuminate\Http\Response $request
-     * @return Array
+     * @param Request $request
+     * @return \Illuminate\Http\Response
      */
     public function all(Request $request)
     {
@@ -33,8 +44,8 @@ class SamplesController extends BaseController
     /**
      * Create a sample data
      *
-     * @param \Illuminate\Http\Response $request
-     * @return Array
+     * @param Request $request
+     * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
     {
