@@ -4,6 +4,11 @@ namespace App\Data\Models\Sample;
 
 use App\Data\Models\BaseModel;
 
+/**
+ * Class Sample
+ *
+ * @package App\Data\Models\Sample
+ */
 class Sample extends BaseModel
 {
     //region Properties
