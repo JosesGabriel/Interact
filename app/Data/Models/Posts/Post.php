@@ -4,6 +4,7 @@
 namespace App\Data\Models\Posts;
 
 use App\Data\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 /**
@@ -13,6 +14,8 @@ use Illuminate\Support\Str;
  */
 class Post extends BaseModel
 {
+    use SoftDeletes;
+
     //region Configs
     protected $fillable = [
         'user_id',
