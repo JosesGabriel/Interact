@@ -13,3 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group([
+    'prefix' => 'posts',
+    'namespace' => 'Posts',
+], function () {
+    Route::post('create', 'PostsController@create');
+});
