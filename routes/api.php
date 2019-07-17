@@ -18,4 +18,5 @@ Route::group([
     'namespace' => 'Posts',
 ], function () {
     Route::post('create', 'PostsController@create');
+    Route::post('delete', 'PostsController@delete');
 });
