@@ -86,19 +86,8 @@ class PostRepository extends BaseRepository
         }
         //endregion Data validation
 
-        //region Existence check
-        $post =  $this->post_model->findByUUID($id);
-
-        if (!$post) {
-            return $this->setResponse([
-                'status' => 404,
-                'message' => 'The post does not exist.',
-            ]);
-        }
-        //endregion Existence check
-
         //region Data deletion
-        if (!$post->delete()) {
+        if (!$this->post_model->byUUID($id)->delete()) {
             return $this->setResponse([
                 'status' => 500,
                 'message' => 'An error has occurred while deleting the post.',
