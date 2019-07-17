@@ -114,11 +114,28 @@ class PostRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return PostRepository
      */
     public function fetch($id)
     {
-        // TODO: Implement fetch() method.
+        //region Existence check
+        $post =  $this->post_model->findByUUID($id);
+
+        if (!$post) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The post does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched post.',
+            'data' => [
+                'post' => $post,
+            ],
+        ]);
     }
 
     /**
