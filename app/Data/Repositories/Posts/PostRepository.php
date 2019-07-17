@@ -72,12 +72,44 @@ class PostRepository extends BaseRepository
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param string $id
+     * @return PostRepository
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        //region Data validation
+        if (trim($id) == '') {
+            return $this->setResponse([
+                'status' => 417,
+                'message' => 'The post id is not set or invalid.',
+            ]);
+        }
+        //endregion Data validation
+
+        //region Existence check
+        $post =  $this->post_model->findByUUID($id);
+
+        if (!$post) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The post does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        //region Data deletion
+        if (!$post->delete()) {
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while deleting the post.',
+            ]);
+        }
+        //endregion Data deletion
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully deleted post.',
+        ]);
     }
 
     /**
