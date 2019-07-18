@@ -6,6 +6,7 @@ namespace App\Data\Models\Posts;
 use App\Data\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Snowflake\HasSnowflakePrimary;
 
 /**
  * Class Post
@@ -14,9 +15,17 @@ use Illuminate\Support\Str;
  */
 class Post extends BaseModel
 {
+    use HasSnowflakePrimary;
     use SoftDeletes;
 
     //region Configs
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
     protected $fillable = [
         'user_id',
         'content',
@@ -24,9 +33,7 @@ class Post extends BaseModel
         'visibility',
     ];
 
-    protected $hidden = [
-        'id',
-    ];
+    protected $hidden = [];
 
     protected $rules = [
         'user_id' => 'sometimes|required',
