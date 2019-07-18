@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController;
 use App\Services\Posts\CreateService;
 use App\Services\Posts\DeleteService;
 use App\Services\Posts\FetchService;
+use App\Services\Posts\UpdateService;
 use Illuminate\Http\Request;
 
 /**
@@ -46,7 +47,7 @@ class PostsController extends BaseController
 
     /**
      * Fetch a post by id
-     * 
+     *
      * @param Request $request
      * @param FetchService $fetchService
      * @return \Illuminate\Http\Response
@@ -56,6 +57,20 @@ class PostsController extends BaseController
         $data = $request->all();
 
         $response = $fetchService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param UpdateService $updateService
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, UpdateService $updateService)
+    {
+        $data = $request->all();
+
+        $response = $updateService->handle($data);
 
         return $this->absorb($response)->respond();
     }
