@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94d4bf9ac7f4a933030e46a346ee2917",
+    "content-hash": "d6841ca38e9493e25e3fe9ee102109d8",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -752,6 +752,62 @@
                 "storage"
             ],
             "time": "2019-05-20T20:21:14+00:00"
+        },
+        {
+            "name": "maxsky/laravel-snowflake",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maxsky/laravel-snowflake.git",
+                "reference": "674d092ee366f64c1791bfdabb061007a5f93025"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maxsky/laravel-snowflake/zipball/674d092ee366f64c1791bfdabb061007a5f93025",
+                "reference": "674d092ee366f64c1791bfdabb061007a5f93025",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Snowflake\\SnowflakeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Snowflake\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Koki Asai",
+                    "email": "koki@asai.email"
+                },
+                {
+                    "name": "Max Sky",
+                    "email": "max940213@live.com"
+                }
+            ],
+            "description": "Snowflake for Laravel/Lumen.",
+            "homepage": "https://github.com/maxsky/laravel-snowflake",
+            "keywords": [
+                "laravel",
+                "lumen",
+                "snowflake"
+            ],
+            "time": "2019-07-02T17:56:43+00:00"
         },
         {
             "name": "monolog/monolog",

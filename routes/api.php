@@ -13,3 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group([
+    'prefix' => 'posts',
+    'namespace' => 'Posts',
+], function () {
+    Route::post('create', 'PostsController@create');
+    Route::post('delete', 'PostsController@delete');
+    Route::post('fetch', 'PostsController@fetch');
+    Route::post('update', 'PostsController@update');
+});
