@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Posts;
 use App\Http\Controllers\BaseController;
 use App\Services\Posts\CreateService;
 use App\Services\Posts\DeleteService;
+use App\Services\Posts\FetchService;
 use Illuminate\Http\Request;
 
 /**
@@ -39,6 +40,22 @@ class PostsController extends BaseController
         $data = $request->all();
 
         $response = $deleteService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * Fetch a post by id
+     * 
+     * @param Request $request
+     * @param FetchService $fetchService
+     * @return \Illuminate\Http\Response
+     */
+    public function fetch(Request $request, FetchService $fetchService)
+    {
+        $data = $request->all();
+
+        $response = $fetchService->handle($data);
 
         return $this->absorb($response)->respond();
     }

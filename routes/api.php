@@ -19,4 +19,5 @@ Route::group([
 ], function () {
     Route::post('create', 'PostsController@create');
     Route::post('delete', 'PostsController@delete');
+    Route::post('fetch', 'PostsController@fetch');
 });
