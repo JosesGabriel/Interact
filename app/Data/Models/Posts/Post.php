@@ -26,6 +26,10 @@ class Post extends BaseModel
      */
     public $incrementing = false;
 
+    protected $casts = [
+        'id' => 'string',
+    ];
+
     protected $fillable = [
         'user_id',
         'content',
