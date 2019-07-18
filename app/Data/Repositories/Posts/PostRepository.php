@@ -72,13 +72,15 @@ class PostRepository extends BaseRepository
     }
 
     /**
-     * @param string $id
+     * @param integer|string $id
      * @return PostRepository
+     * @throws \Exception
      */
     public function delete($id)
     {
         //region Data validation
-        if (trim($id) == '') {
+        if (!isset($id) ||
+            !is_numeric($id)) {
             return $this->setResponse([
                 'status' => 417,
                 'message' => 'The post id is not set or invalid.',
@@ -87,10 +89,15 @@ class PostRepository extends BaseRepository
         //endregion Data validation
 
         //region Data deletion
-        if (!$this->post_model->byUUID($id)->delete()) {
+        $post = $this->post_model->find($id);
+        if (!$post->delete()) {
+            $errors = $post->getErrors();
             return $this->setResponse([
                 'status' => 500,
                 'message' => 'An error has occurred while deleting the post.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
             ]);
         }
         //endregion Data deletion
@@ -102,13 +109,13 @@ class PostRepository extends BaseRepository
     }
 
     /**
-     * @param $id
+     * @param integer|string $id
      * @return PostRepository
      */
     public function fetch($id)
     {
         //region Existence check
-        $post =  $this->post_model->findByUUID($id);
+        $post =  $this->post_model->find($id);
 
         if (!$post) {
             return $this->setResponse([

@@ -36,7 +36,7 @@ class DeleteService extends BaseService
     {
         //region Data validation
         if (!isset($data['id']) ||
-            trim($data['id']) == '') {
+            !is_numeric($data['id'])) {
             return $this->setResponse([
                 'status' => 417,
                 'message' => 'The post id is not set or invalid.',
