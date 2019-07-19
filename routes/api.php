@@ -21,4 +21,11 @@ Route::group([
     Route::post('delete', 'PostsController@delete');
     Route::post('fetch', 'PostsController@fetch');
     Route::post('update', 'PostsController@update');
+
+    Route::group([
+        'namespace' => 'Comments',
+        'prefix' => '{post_id}/comment'
+    ], function () {
+        Route::post('/', 'CommentsController@create');
+    });
 });
