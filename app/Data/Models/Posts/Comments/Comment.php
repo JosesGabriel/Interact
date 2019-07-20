@@ -1,18 +1,18 @@
 <?php
 
 
-namespace App\Data\Models\Posts;
+namespace App\Data\Models\Posts\Comments;
 
 use App\Data\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Snowflake\HasSnowflakePrimary;
 
 /**
- * Class Post
+ * Class Comment
  *
- * @package App\Data\Models\Posts
+ * @package App\Data\Models\Posts\Comments
  */
-class Post extends BaseModel
+class Comment extends BaseModel
 {
     use HasSnowflakePrimary;
     use SoftDeletes;
@@ -27,29 +27,36 @@ class Post extends BaseModel
 
     protected $casts = [
         'id' => 'string',
+        'post_id' => 'string',
+        'parent_id' => 'string',
     ];
 
     protected $fillable = [
+        'post_id',
+        'parent_id',
         'user_id',
         'content',
-        'status',
-        'visibility',
     ];
 
     protected $hidden = [];
 
     protected $rules = [
+        'post_id' => 'sometimes|required',
+        'parent_id' => 'sometimes|required',
         'user_id' => 'sometimes|required',
         'content' => 'sometimes|required',
-        'status' => 'sometimes|required',
-        'visibility' => 'sometimes|required',
     ];
     //endregion Configs
 
     //region Relations
+    public function post()
+    {
+        return $this->belongsTo(config('modelmap.posts.post'));
+    }
+
     public function comments()
     {
-        return $this->hasMany(config('modelmap.posts.comments.comment'))->where('parent_id', 0);
+        return $this->hasMany(config('modelmap.posts.comments.comment'), 'parent_id', 'id');
     }
     //endregion Relations
 }
