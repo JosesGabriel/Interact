@@ -109,11 +109,28 @@ class CommentRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return CommentRepository
      */
     public function fetch($id)
     {
-        // TODO: Implement fetch() method.
+        //region Existence check
+        $comment = $this->comment_model->find($id);
+
+        if (!$comment) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The comment does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched the comment.',
+            'data' => [
+                'comment' => $comment,
+            ],
+        ]);
     }
 
     /**
