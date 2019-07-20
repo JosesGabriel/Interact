@@ -28,5 +28,6 @@ Route::group([
     ], function () {
         Route::post('/', 'CommentsController@create');
         Route::delete('/{id}', 'CommentsController@delete');
+        Route::get('/', 'CommentsController@all');
     });
 });
