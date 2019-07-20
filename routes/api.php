@@ -27,5 +27,6 @@ Route::group([
         'prefix' => '{post_id}/comment'
     ], function () {
         Route::post('/', 'CommentsController@create');
+        Route::delete('/{id}', 'CommentsController@delete');
     });
 });
