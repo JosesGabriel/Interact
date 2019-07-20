@@ -45,4 +45,16 @@ class Comment extends BaseModel
         'content' => 'sometimes|required',
     ];
     //endregion Configs
+
+    //region Relations
+    public function post()
+    {
+        return $this->belongsTo(config('modelmap.posts.post'));
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(config('modelmap.posts.comments.comment'), 'parent_id', 'id');
+    }
+    //endregion Relations
 }

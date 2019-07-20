@@ -45,4 +45,11 @@ class Post extends BaseModel
         'visibility' => 'sometimes|required',
     ];
     //endregion Configs
+
+    //region Relations
+    public function comments()
+    {
+        return $this->hasMany(config('modelmap.posts.comments.comment'))->where('parent_id', 0);
+    }
+    //endregion Relations
 }
