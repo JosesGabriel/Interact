@@ -28,6 +28,11 @@ class CommentRepository extends BaseRepository
         $this->comment_model = $comment;
     }
 
+    public function all(array $data)
+    {
+
+    }
+
     /**
      * @param array $data
      * @return CommentRepository
@@ -135,11 +140,31 @@ class CommentRepository extends BaseRepository
 
     /**
      * @param array $data
-     * @return mixed
+     * @return CommentRepository
      */
     public function search(array $data)
     {
-        // TODO: Implement search() method.
+        $model = Comment::query();
+
+        //region Build query
+        if (isset($data['where'])) {
+            $model->where($data['where']);
+        }
+
+        if (isset($data['with'])) {
+            $model->with($data['with']);
+        }
+        //endregion Build query
+
+        $result = $model->get();
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully searched comments.',
+            'data' => [
+                'comments' => $result,
+            ],
+        ]);
     }
 
     /**
