@@ -27,6 +27,8 @@ class Comment extends BaseModel
 
     protected $casts = [
         'id' => 'string',
+        'post_id' => 'string',
+        'parent_id' => 'string',
     ];
 
     protected $fillable = [
