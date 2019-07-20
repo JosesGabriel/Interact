@@ -14,6 +14,11 @@ use App\Services\BaseService;
 class DeleteService extends BaseService
 {
     /**
+     * @var CommentRepository
+     */
+    private $comment_repo;
+
+    /**
      * DeleteService constructor.
      * @param CommentRepository $commentRepository
      */
