@@ -19,7 +19,7 @@ Route::group([
 ], function () {
     Route::post('/', 'PostsController@create');
     Route::delete('{id}', 'PostsController@delete');
-    Route::post('fetch', 'PostsController@fetch');
+    Route::get('{id}', 'PostsController@fetch');
     Route::post('update', 'PostsController@update');
 
     Route::group([

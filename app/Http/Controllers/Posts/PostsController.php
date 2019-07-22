@@ -56,11 +56,17 @@ class PostsController extends BaseController
      *
      * @param Request $request
      * @param FetchService $fetchService
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function fetch(Request $request, FetchService $fetchService)
-    {
+    public function fetch(
+        Request $request,
+        FetchService $fetchService,
+        $id
+    ){
         $data = $request->all();
+
+        $data['id'] = $id;
 
         $response = $fetchService->handle($data);
 
