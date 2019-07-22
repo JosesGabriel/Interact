@@ -19,14 +19,16 @@ class PostsController extends BaseController
 {
     /**
      * @param Request $request
-     * @param CreateService $create_service
+     * @param CreateService $createService
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, CreateService $create_service)
-    {
+    public function create(
+        Request $request,
+        CreateService $createService
+    ){
         $data = $request->all();
 
-        $response = $create_service->handle($data);
+        $response = $createService->handle($data);
 
         return $this->absorb($response)->respond();
     }

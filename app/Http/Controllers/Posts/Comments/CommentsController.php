@@ -46,8 +46,11 @@ class CommentsController extends BaseController
      * @param $post_id
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, CreateService $createService, $post_id)
-    {
+    public function create(
+        Request $request,
+        CreateService $createService,
+        $post_id
+    ){
         $data = $request->all();
 
         $data['post_id'] = $post_id;

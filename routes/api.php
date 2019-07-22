@@ -14,20 +14,20 @@ use Illuminate\Http\Request;
 */
 
 Route::group([
-    'prefix' => 'posts',
     'namespace' => 'Posts',
+    'prefix' => 'posts',
 ], function () {
-    Route::post('/', 'PostsController@create');
-    Route::delete('{id}', 'PostsController@delete');
     Route::get('{id}', 'PostsController@fetch');
+    Route::delete('{id}', 'PostsController@delete');
+    Route::post('/', 'PostsController@create');
     Route::put('{id}', 'PostsController@update');
 
     Route::group([
+        'prefix' => '{post_id}/comment',
         'namespace' => 'Comments',
-        'prefix' => '{post_id}/comment'
     ], function () {
-        Route::post('/', 'CommentsController@create');
         Route::delete('/{id}', 'CommentsController@delete');
         Route::get('/', 'CommentsController@all');
+        Route::post('/', 'CommentsController@create');
     });
 });
