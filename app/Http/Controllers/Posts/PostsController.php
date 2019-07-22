@@ -19,14 +19,16 @@ class PostsController extends BaseController
 {
     /**
      * @param Request $request
-     * @param CreateService $create_service
+     * @param CreateService $createService
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, CreateService $create_service)
-    {
+    public function create(
+        Request $request,
+        CreateService $createService
+    ){
         $data = $request->all();
 
-        $response = $create_service->handle($data);
+        $response = $createService->handle($data);
 
         return $this->absorb($response)->respond();
     }
@@ -34,11 +36,17 @@ class PostsController extends BaseController
     /**
      * @param Request $request
      * @param DeleteService $deleteService
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, DeleteService $deleteService)
-    {
+    public function delete(
+        Request $request,
+        DeleteService $deleteService,
+        $id
+    ){
         $data = $request->all();
+
+        $data['id'] = $id;
 
         $response = $deleteService->handle($data);
 
@@ -50,11 +58,17 @@ class PostsController extends BaseController
      *
      * @param Request $request
      * @param FetchService $fetchService
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function fetch(Request $request, FetchService $fetchService)
-    {
+    public function fetch(
+        Request $request,
+        FetchService $fetchService,
+        $id
+    ){
         $data = $request->all();
+
+        $data['id'] = $id;
 
         $response = $fetchService->handle($data);
 
@@ -64,11 +78,17 @@ class PostsController extends BaseController
     /**
      * @param Request $request
      * @param UpdateService $updateService
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UpdateService $updateService)
-    {
+    public function update(
+        Request $request,
+        UpdateService $updateService,
+        $id
+    ){
         $data = $request->all();
+
+        $data['id'] = $id;
 
         $response = $updateService->handle($data);
 
