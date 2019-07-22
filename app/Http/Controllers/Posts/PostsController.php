@@ -34,11 +34,17 @@ class PostsController extends BaseController
     /**
      * @param Request $request
      * @param DeleteService $deleteService
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, DeleteService $deleteService)
-    {
+    public function delete(
+        Request $request,
+        DeleteService $deleteService,
+        $id
+    ){
         $data = $request->all();
+
+        $data['id'] = $id;
 
         $response = $deleteService->handle($data);
 
