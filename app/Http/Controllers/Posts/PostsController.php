@@ -76,11 +76,17 @@ class PostsController extends BaseController
     /**
      * @param Request $request
      * @param UpdateService $updateService
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UpdateService $updateService)
-    {
+    public function update(
+        Request $request,
+        UpdateService $updateService,
+        $id
+    ){
         $data = $request->all();
+
+        $data['id'] = $id;
 
         $response = $updateService->handle($data);
 

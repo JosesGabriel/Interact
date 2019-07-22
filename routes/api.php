@@ -20,7 +20,7 @@ Route::group([
     Route::post('/', 'PostsController@create');
     Route::delete('{id}', 'PostsController@delete');
     Route::get('{id}', 'PostsController@fetch');
-    Route::post('update', 'PostsController@update');
+    Route::put('{id}', 'PostsController@update');
 
     Route::group([
         'namespace' => 'Comments',
