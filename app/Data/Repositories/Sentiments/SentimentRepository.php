@@ -156,10 +156,39 @@ class SentimentRepository extends BaseRepository
     /**
      * @param $id
      * @param array $data
-     * @return mixed
+     * @return SentimentRepository
      */
     public function update($id, array $data)
     {
-        // TODO: Implement update() method.
+        //region Existence check
+        $sentiment = $this->fetch($id);
+
+        if ($sentiment->isError()) {
+            return $sentiment;
+        }
+        //endregion Existence check
+
+        $sentiment = $sentiment->getDataByKey('sentiment');
+
+        //region Data update
+        if (!$sentiment->save($data)) {
+            $errors = $sentiment->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while updating the sentiment.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data update
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully updated the sentiment.',
+            'data' => [
+                'sentiment' => $sentiment,
+            ],
+        ]);
     }
 }
