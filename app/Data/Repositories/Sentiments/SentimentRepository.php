@@ -95,7 +95,45 @@ class SentimentRepository extends BaseRepository
      */
     public function search(array $data)
     {
-        // TODO: Implement search() method.
+        $model = Sentiment::query();
+
+        //region Build query
+        if (isset($data['where'])) {
+            $model->where($data['where']);
+        }
+
+        if (isset($data['with'])) {
+            $model->with($data['with']);
+        }
+        //endregion Build query
+
+        $result = $model->get();
+        $count = count($result);
+
+        if ($count == 0) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'Sentiments not found.',
+                'meta' => [
+                    'count' => [
+                        'sentiments' => $count,
+                    ],
+                ],
+            ]);
+        }
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully searched sentiments.',
+            'data' => [
+                'sentiments' => $result,
+            ],
+            'meta' => [
+                'count' => [
+                    'sentiments' => $count,
+                ],
+            ],
+        ]);
     }
 
     /**
