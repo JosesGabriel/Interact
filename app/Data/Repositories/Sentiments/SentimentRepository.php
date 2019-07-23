@@ -1,0 +1,110 @@
+<?php
+
+
+namespace App\Data\Repositories\Sentiments;
+
+use App\Data\Models\Sentiments\Sentiment;
+use App\Data\Repositories\BaseRepository;
+
+/**
+ * Class SentimentRepository
+ *
+ * @package App\Data\Repositories\Sentiments
+ */
+class SentimentRepository extends BaseRepository
+{
+    /**
+     * @var Sentiment
+     */
+    private $sentiment_model;
+
+    /**
+     * SentimentRepository constructor.
+     * @param Sentiment $sentiment
+     */
+    public function __construct(
+        Sentiment $sentiment
+    ){
+        $this->sentiment_model = $sentiment;
+    }
+
+    /**
+     * @param array $data
+     * @return SentimentRepository
+     */
+    public function create(array $data)
+    {
+        $sentiment = $this->sentiment_model->init($data);
+
+        //region Data validation
+        if (!$sentiment->validate($data)) {
+            $errors = $sentiment->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => $errors[0],
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data validation
+
+        //region Data insertion
+        if (!$sentiment->save()) {
+            $errors = $sentiment->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while saving the post.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data insertion
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully created sentiment.',
+            'data' => [
+                'sentiment' => $sentiment,
+            ],
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function fetch($id)
+    {
+        // TODO: Implement fetch() method.
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function search(array $data)
+    {
+        // TODO: Implement search() method.
+    }
+
+    /**
+     * @param $id
+     * @param array $data
+     * @return mixed
+     */
+    public function update($id, array $data)
+    {
+        // TODO: Implement update() method.
+    }
+}
