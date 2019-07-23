@@ -82,11 +82,28 @@ class SentimentRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return SentimentRepository
      */
     public function fetch($id)
     {
-        // TODO: Implement fetch() method.
+        //region Existence check
+        $sentiment = $this->sentiment_model->find($id);
+
+        if (!$sentiment) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The sentiment does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched sentiment.',
+            'data' => [
+                'sentiment' => $sentiment,
+            ],
+        ]);
     }
 
     /**
