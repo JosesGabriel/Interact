@@ -73,11 +73,39 @@ class SentimentRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return SentimentRepository
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        //region Data validation
+        if (!isset($id) ||
+            !is_numeric($id)) {
+            return $this->setResponse([
+                'status' => 417,
+                'message' => 'The sentiment id is not set or invalid.',
+            ]);
+        }
+        //endregion Data validation
+
+        //region Data deletion
+        $sentiment = $this->sentiment_model->find($id);
+
+        if (!$sentiment->delete()) {
+            $errors = $sentiment->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while deleting the sentiment.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data deletion
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully deleted the sentiment.',
+        ]);
     }
 
     /**
