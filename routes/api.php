@@ -25,7 +25,7 @@ Route::group([
     Route::put('{id}', 'PostsController@update');
 
     Route::group([
-        'prefix' => '{post_id}/comment',
+        'prefix' => '{post_id}/comments',
         'namespace' => 'Comments',
     ], function () {
         Route::delete('/{id}', 'CommentsController@delete');
