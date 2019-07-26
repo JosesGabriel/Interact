@@ -4,11 +4,11 @@ return [
     'sentimentable_type' => [
         'comment' => [
             'label' => 'comment',
-            'value' => 'App\Data\Models\Posts\Comments\Comment',
+            'value' => 'comment',
         ],
         'post' => [
             'label' => 'post',
-            'value' => 'App\Data\Models\Posts\Post',
+            'value' => 'post',
         ],
     ],
     'type' => [
