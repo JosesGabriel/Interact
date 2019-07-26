@@ -19,7 +19,7 @@ Route::group([
 ], function () {
     Route::get('{id}', 'PostsController@fetch');
     Route::delete('{id}', 'PostsController@delete');
-    Route::delete('{id}/{sentiment}/{sentiment_id}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
+    Route::delete('{id}/un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
     Route::post('/', 'PostsController@create');
     Route::post('{id}/{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     Route::put('{id}', 'PostsController@update');
