@@ -105,22 +105,18 @@ class PostsController extends BaseController
      * @param \App\Services\Sentiments\DeleteService $deleteService
      * @param $id
      * @param $sentiment
-     * @param $sentiment_id
      * @return \Illuminate\Http\Response
      */
     public function unsentimentalize(
         Request $request,
         \App\Services\Sentiments\DeleteService $deleteService,
         $id,
-        $sentiment,
-        $sentiment_id
+        $sentiment
     ){
         $data = $request->all();
 
-        $data['id'] = $sentiment_id;
         $data['sentimentable_id'] = $id;
         $data['sentimentable_type'] = 'post';
-        $data['sentiment_id'] = $sentiment_id;
         $data['type'] = $sentiment;
 
         $response = $deleteService->handle($data);
