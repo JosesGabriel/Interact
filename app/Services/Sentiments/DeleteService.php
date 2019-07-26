@@ -35,13 +35,6 @@ class DeleteService extends BaseService
     public function handle(array $data)
     {
         //region Data validation
-        if (!isset($data['id'])) {
-            return $this->setResponse([
-                'status' => 417,
-                'message' => 'The sentiment id is not set or invalid.',
-            ]);
-        }
-
         if (!isset($data['sentimentable_id'])) {
             return $this->setResponse([
                 'status' => 417,
@@ -72,14 +65,24 @@ class DeleteService extends BaseService
         //endregion Data validation
 
         //region Existence check
-        $sentiment = $this->sentiment_repo->fetch($data['id']);
+        $query['where'] = [
+            ['sentimentable_id', '=', $data['sentimentable_id']],
+            ['sentimentable_type', '=', $data['sentimentable_type']],
+            ['type', '=', $data['type']],
+            ['user_id', '=', $data['user_id']],
+        ];
 
-        if ($sentiment->isError()) {
-            return $sentiment;
+        $sentiments = $this->sentiment_repo->search($query);
+
+        if ($sentiments->isError()) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The sentiment does not exist.',
+            ]);
         }
         //endregion Existence check
 
-        $sentiment = $sentiment->getDataByKey('sentiment');
+        $sentiment = $sentiments->getDataByKey('sentiments')[0];
 
         //region Entity validation
         if ($sentiment->user_id != $data['user_id']) {
