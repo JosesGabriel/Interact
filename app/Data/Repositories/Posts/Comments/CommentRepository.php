@@ -170,10 +170,73 @@ class CommentRepository extends BaseRepository
     /**
      * @param $id
      * @param array $data
-     * @return mixed
+     * @return CommentRepository
      */
     public function update($id, array $data)
     {
-        // TODO: Implement update() method.
+        $user_id = null;
+        $comment = null;
+
+        //region Data validation
+        if (!isset($id) ||
+            !is_numeric($id)) {
+            return $this->setResponse([
+                'status' => 417,
+                'message' => 'The comment id is not set or invalid.',
+            ]);
+        }
+
+        if (!isset($data['user_id']) ||
+            trim($data['user_id']) == '') {
+            return $this->setResponse([
+                'status' => 417,
+                'message' => 'The user id is not set or invalid.',
+            ]);
+        }
+        //endregion Data validation
+
+        $user_id = $data['user_id'];
+        unset($data['user_id']);
+
+        //region Existence check
+        $comment = $this->fetch($id);
+
+        if ($comment->isError()) {
+            return $comment;
+        }
+        //endregion Existence check
+
+        $comment = $comment->getDataByKey('comment');
+
+        //region Authorization check
+        // if this post does not belong to the user
+        if ($user_id != $comment->user_id) {
+            return $this->setResponse([
+                'status' => 403,
+                'message' => 'The user is unable to update this comment.',
+            ]);
+        }
+        //endregion Authorization check
+
+        //region Data update
+        if (!$comment->save($data)) {
+            $errors = $comment->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while updating the comment.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data update
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully updated the comment.',
+            'data' => [
+                'comment' => $comment,
+            ],
+        ]);
     }
 }

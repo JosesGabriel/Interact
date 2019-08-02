@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController;
 use App\Services\Posts\Comments\CreateService;
 use App\Services\Posts\Comments\DeleteService;
 use App\Services\Posts\Comments\SearchService;
+use App\Services\Posts\Comments\UpdateService;
 use Illuminate\Http\Request;
 
 /**
@@ -79,6 +80,29 @@ class CommentsController extends BaseController
         $data['post_id'] = $post_id;
 
         $response = $deleteService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param UpdateService $updateService
+     * @param $post_id
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(
+        Request $request,
+        UpdateService $updateService,
+        $post_id,
+        $id
+    ){
+        $data = $request->all();
+
+        $data['id'] = $id;
+        $data['post_id'] = $post_id;
+
+        $response = $updateService->handle($data);
 
         return $this->absorb($response)->respond();
     }
