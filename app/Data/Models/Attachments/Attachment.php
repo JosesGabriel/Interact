@@ -31,6 +31,7 @@ class Attachment extends BaseModel
         'attachable_id',
         'attachable_type',
         'user_id',
+        'url',
     ];
 
     protected $rules = [
