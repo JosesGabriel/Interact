@@ -32,6 +32,13 @@ class Attachment extends BaseModel
         'attachable_type',
         'user_id',
     ];
+
+    protected $rules = [
+        'attachable_id' => 'sometimes|required',
+        'attachable_type' => 'sometimes|required',
+        'user_id' => 'sometimes|required|uuid',
+        'url' => 'sometimes|required|url',
+    ];
     //endregion Configs
 
     //region Relations
