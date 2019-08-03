@@ -18,6 +18,7 @@ Route::group([
     'prefix' => 'posts',
 ], function () {
     Route::get('{id}', 'PostsController@fetch');
+    Route::delete('{id}/attachments/{attachment_id}', 'PostsController@removeAttachment');
     Route::delete('{id}', 'PostsController@delete');
     Route::delete('{id}/un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
     Route::post('/', 'PostsController@create');
