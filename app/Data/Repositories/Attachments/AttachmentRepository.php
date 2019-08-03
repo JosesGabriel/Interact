@@ -37,7 +37,7 @@ class AttachmentRepository extends BaseRepository
         $attachment = $this->attachment_model->init($data);
 
         //region Data validation
-        if ($attachment->validate($data)) {
+        if (!$attachment->validate($data)) {
             $errors = $attachment->getErrors();
             return $this->setResponse([
                 'status' => 417,
