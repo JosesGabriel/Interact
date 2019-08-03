@@ -51,9 +51,13 @@ class AttachmentRepository extends BaseRepository
 
         //region Data insertion
         if (!$attachment->save()) {
+            $errors = $attachment->getErrors();
             return $this->setResponse([
                 'status' => 500,
                 'message' => 'An error has occurred while saving the attachment.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
             ]);
         }
         //endregion Data insertion
