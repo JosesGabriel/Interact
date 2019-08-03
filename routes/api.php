@@ -21,6 +21,7 @@ Route::group([
     Route::delete('{id}', 'PostsController@delete');
     Route::delete('{id}/un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
     Route::post('/', 'PostsController@create');
+    Route::post('{id}/attachments', 'PostsController@addAttachment');
     Route::post('{id}/{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     Route::put('{id}', 'PostsController@update');
 
