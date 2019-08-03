@@ -69,7 +69,7 @@ class AttachmentRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return AttachmentRepository
      */
     public function delete($id)
     {
@@ -114,7 +114,7 @@ class AttachmentRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return AttachmentRepository
      */
     public function fetch($id)
     {
@@ -150,7 +150,7 @@ class AttachmentRepository extends BaseRepository
 
     /**
      * @param array $data
-     * @return mixed
+     * @return AttachmentRepository
      */
     public function search(array $data)
     {
