@@ -47,6 +47,11 @@ class Post extends BaseModel
     //endregion Configs
 
     //region Relations
+    public function attachments()
+    {
+        return $this->morphMany(config('modelmap.attachments.attachment'), 'attachable');
+    }
+
     public function comments()
     {
         return $this->hasMany(config('modelmap.posts.comments.comment'))->where('parent_id', 0);
