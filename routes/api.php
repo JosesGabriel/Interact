@@ -19,9 +19,7 @@ Route::group([
 ], function () {
     Route::get('{id}', 'PostsController@fetch');
     Route::delete('{id}', 'PostsController@delete');
-    Route::delete('{id}/un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
     Route::post('/', 'PostsController@create');
-    Route::post('{id}/{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     Route::put('{id}', 'PostsController@update');
 
     Route::group([
@@ -46,5 +44,12 @@ Route::group([
             Route::delete('{attachment_id}', 'CommentsController@removeAttachment');
             Route::post('/', 'CommentsController@addAttachment');
         });
+    });
+
+    Route::group([
+        'prefix' => '{id}',
+    ], function () {
+        Route::delete('un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
+        Route::post('{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     });
 });
