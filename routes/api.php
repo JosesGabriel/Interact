@@ -25,6 +25,13 @@ Route::group([
     Route::put('{id}', 'PostsController@update');
 
     Route::group([
+        'prefix' => '{id}/attachments',
+    ], function () {
+        Route::delete('{attachment_id}', 'PostsController@removeAttachment');
+        Route::post('/', 'PostsController@addAttachment');
+    });
+
+    Route::group([
         'prefix' => '{post_id}/comments',
         'namespace' => 'Comments',
     ], function () {
@@ -32,5 +39,12 @@ Route::group([
         Route::get('/', 'CommentsController@all');
         Route::post('/', 'CommentsController@create');
         Route::put('{id}', 'CommentsController@update');
+
+        Route::group([
+            'prefix' => '{id}/attachments',
+        ], function () {
+            Route::delete('{attachment_id}', 'CommentsController@removeAttachment');
+            Route::post('/', 'CommentsController@addAttachment');
+        });
     });
 });

@@ -4,9 +4,11 @@
 namespace App\Http\Controllers\Posts;
 
 use App\Http\Controllers\BaseController;
+use App\Services\Posts\AddAttachmentService;
 use App\Services\Posts\CreateService;
 use App\Services\Posts\DeleteService;
 use App\Services\Posts\FetchService;
+use App\Services\Posts\RemoveAttachmentService;
 use App\Services\Posts\UpdateService;
 use App\Services\Sentiments\CreateOrUpdateService;
 use Illuminate\Http\Request;
@@ -18,6 +20,28 @@ use Illuminate\Http\Request;
  */
 class PostsController extends BaseController
 {
+    /**
+     * @param Request $request
+     * @param AddAttachmentService $addAttachmentService
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addAttachment(
+        Request $request,
+        AddAttachmentService $addAttachmentService,
+        $id
+    ){
+        $data = $request->all();
+
+        $data['id'] = $id;
+        $data['attachable_id'] = $id;
+        $data['attachable_type'] = 'post';
+
+        $response = $addAttachmentService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
     /**
      * @param Request $request
      * @param CreateService $createService
@@ -72,6 +96,29 @@ class PostsController extends BaseController
         $data['id'] = $id;
 
         $response = $fetchService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param RemoveAttachmentService $removeAttachmentService
+     * @param $id
+     * @param $attachment_id
+     * @return \Illuminate\Http\Response
+     */
+    public function removeAttachment(
+        Request $request,
+        RemoveAttachmentService $removeAttachmentService,
+        $id,
+        $attachment_id
+    ){
+        $data = $request->all();
+
+        $data['id'] = $id;
+        $data['attachment_id'] = $attachment_id;
+
+        $response = $removeAttachmentService->handle($data);
 
         return $this->absorb($response)->respond();
     }
