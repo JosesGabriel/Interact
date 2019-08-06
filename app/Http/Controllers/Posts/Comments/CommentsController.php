@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Posts\Comments;
 
 use App\Http\Controllers\BaseController;
+use App\Services\Posts\Comments\AddAttachmentService;
 use App\Services\Posts\Comments\CreateService;
 use App\Services\Posts\Comments\DeleteService;
 use App\Services\Posts\Comments\SearchService;
@@ -17,6 +18,31 @@ use Illuminate\Http\Request;
  */
 class CommentsController extends BaseController
 {
+    /**
+     * @param Request $request
+     * @param AddAttachmentService $addAttachmentService
+     * @param $post_id
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addAttachment(
+        Request $request,
+        AddAttachmentService $addAttachmentService,
+        $post_id,
+        $id
+    ){
+        $data = $request->all();
+
+        $data['attachable_id'] = $id;
+        $data['attachable_type'] = 'comment';
+        $data['id'] = $id;
+        $data['post_id'] = $post_id;
+
+        $response = $addAttachmentService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
     /**
      * Fetches a post's comments with subcomments
      *

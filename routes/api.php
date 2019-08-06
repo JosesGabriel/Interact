@@ -33,6 +33,7 @@ Route::group([
         Route::delete('/{id}', 'CommentsController@delete');
         Route::get('/', 'CommentsController@all');
         Route::post('/', 'CommentsController@create');
+        Route::post('{id}/attachments', 'CommentsController@addAttachment');
         Route::put('{id}', 'CommentsController@update');
     });
 });
