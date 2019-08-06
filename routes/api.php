@@ -31,6 +31,7 @@ Route::group([
         'namespace' => 'Comments',
     ], function () {
         Route::delete('/{id}', 'CommentsController@delete');
+        Route::delete('{id}/attachments/{attachment_id}', 'CommentsController@removeAttachment');
         Route::get('/', 'CommentsController@all');
         Route::post('/', 'CommentsController@create');
         Route::post('{id}/attachments', 'CommentsController@addAttachment');

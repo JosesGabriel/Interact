@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController;
 use App\Services\Posts\Comments\AddAttachmentService;
 use App\Services\Posts\Comments\CreateService;
 use App\Services\Posts\Comments\DeleteService;
+use App\Services\Posts\Comments\RemoveAttachmentService;
 use App\Services\Posts\Comments\SearchService;
 use App\Services\Posts\Comments\UpdateService;
 use Illuminate\Http\Request;
@@ -106,6 +107,32 @@ class CommentsController extends BaseController
         $data['post_id'] = $post_id;
 
         $response = $deleteService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param RemoveAttachmentService $removeAttachmentService
+     * @param $post_id
+     * @param $id
+     * @param $attachment_id
+     * @return \Illuminate\Http\Response
+     */
+    public function removeAttachment(
+        Request $request,
+        RemoveAttachmentService $removeAttachmentService,
+        $post_id,
+        $id,
+        $attachment_id
+    ){
+        $data = $request->all();
+
+        $data['attachment_id'] = $attachment_id;
+        $data['id'] = $id;
+        $data['post_id'] = $post_id;
+
+        $response = $removeAttachmentService->handle($data);
 
         return $this->absorb($response)->respond();
     }
