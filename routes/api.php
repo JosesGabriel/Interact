@@ -18,13 +18,18 @@ Route::group([
     'prefix' => 'posts',
 ], function () {
     Route::get('{id}', 'PostsController@fetch');
-    Route::delete('{id}/attachments/{attachment_id}', 'PostsController@removeAttachment');
     Route::delete('{id}', 'PostsController@delete');
     Route::delete('{id}/un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
     Route::post('/', 'PostsController@create');
-    Route::post('{id}/attachments', 'PostsController@addAttachment');
     Route::post('{id}/{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     Route::put('{id}', 'PostsController@update');
+
+    Route::group([
+        'prefix' => '{id}/attachments',
+    ], function () {
+        Route::delete('{attachment_id}', 'PostsController@removeAttachment');
+        Route::post('/', 'PostsController@addAttachment');
+    });
 
     Route::group([
         'prefix' => '{post_id}/comments',
