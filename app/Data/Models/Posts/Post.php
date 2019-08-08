@@ -31,6 +31,8 @@ class Post extends BaseModel
 
     protected $fillable = [
         'user_id',
+        'wall_id',
+        'wall_type',
         'content',
         'status',
         'visibility',
