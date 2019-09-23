@@ -139,7 +139,7 @@ class PostsController extends BaseController
         $data = $request->all();
 
         $data['sentimentable_id'] = $id;
-        $data['sentimentable_type'] = 'post';
+        $data['sentimentable_type'] = config('arbitrage.sentiments.model.sentimentable_type.post.value');
         $data['type'] = $sentiment;
 
         $response = $createOrUpdateService->handle($data);
@@ -163,7 +163,7 @@ class PostsController extends BaseController
         $data = $request->all();
 
         $data['sentimentable_id'] = $id;
-        $data['sentimentable_type'] = 'post';
+        $data['sentimentable_type'] = config('arbitrage.sentiments.model.sentimentable_type.post.value');
         $data['type'] = $sentiment;
 
         $response = $deleteService->handle($data);
