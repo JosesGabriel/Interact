@@ -35,7 +35,7 @@ class PostsController extends BaseController
 
         $data['id'] = $id;
         $data['attachable_id'] = $id;
-        $data['attachable_type'] = 'post';
+        $data['attachable_type'] = config('arbitrage.attachments.model.attachable_type.post.value');
 
         $response = $addAttachmentService->handle($data);
 
