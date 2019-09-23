@@ -35,7 +35,7 @@ class CommentsController extends BaseController
         $data = $request->all();
 
         $data['attachable_id'] = $id;
-        $data['attachable_type'] = 'comment';
+        $data['attachable_type'] =  config('arbitrage.attachments.model.attachable_type.comment.value');
         $data['id'] = $id;
         $data['post_id'] = $post_id;
 

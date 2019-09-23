@@ -35,7 +35,7 @@ class PostsController extends BaseController
 
         $data['id'] = $id;
         $data['attachable_id'] = $id;
-        $data['attachable_type'] = 'post';
+        $data['attachable_type'] = config('arbitrage.attachments.model.attachable_type.post.value');
 
         $response = $addAttachmentService->handle($data);
 
@@ -139,7 +139,7 @@ class PostsController extends BaseController
         $data = $request->all();
 
         $data['sentimentable_id'] = $id;
-        $data['sentimentable_type'] = 'post';
+        $data['sentimentable_type'] = config('arbitrage.sentiments.model.sentimentable_type.post.value');
         $data['type'] = $sentiment;
 
         $response = $createOrUpdateService->handle($data);
@@ -163,7 +163,7 @@ class PostsController extends BaseController
         $data = $request->all();
 
         $data['sentimentable_id'] = $id;
-        $data['sentimentable_type'] = 'post';
+        $data['sentimentable_type'] = config('arbitrage.sentiments.model.sentimentable_type.post.value');
         $data['type'] = $sentiment;
 
         $response = $deleteService->handle($data);
