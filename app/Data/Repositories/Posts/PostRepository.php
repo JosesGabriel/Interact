@@ -4,7 +4,12 @@
 namespace App\Data\Repositories\Posts;
 
 use App\Data\Models\Posts\Post;
+use App\Data\QueryFilters\Post\Status;
+use App\Data\QueryFilters\Post\UserId;
+use App\Data\QueryFilters\Post\Visibility;
+use App\Data\QueryFilters\Post\WallId;
 use App\Data\Repositories\BaseRepository;
+use Illuminate\Pipeline\Pipeline;
 
 /**
  * Class PostRepository
@@ -136,11 +141,35 @@ class PostRepository extends BaseRepository
 
     /**
      * @param array $data
-     * @return mixed
+     * @return PostRepository
      */
     public function search(array $data)
     {
-        // TODO: Implement search() method.
+        //region Data filter
+        $posts = app(Pipeline::class)
+            ->send(Post::query())
+            ->through([
+                Status::class,
+                UserId::class,
+                Visibility::class,
+                WallId::class,
+            ])
+            ->thenReturn()
+            ->get();
+        //endregion Data filter
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully searched posts.',
+            'data' => [
+                'posts' => $posts,
+            ],
+            'meta' => [
+                'count' => [
+                    'posts' => $posts->count(),
+                ],
+            ],
+        ]);
     }
 
     /**
