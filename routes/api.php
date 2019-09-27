@@ -17,6 +17,7 @@ Route::group([
     'namespace' => 'Posts',
     'prefix' => 'posts',
 ], function () {
+    Route::get('search', 'PostsController@search');
     Route::get('{id}', 'PostsController@fetch');
     Route::delete('{id}', 'PostsController@delete');
     Route::post('/', 'PostsController@create');

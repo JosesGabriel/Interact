@@ -9,6 +9,7 @@ use App\Services\Posts\CreateService;
 use App\Services\Posts\DeleteService;
 use App\Services\Posts\FetchService;
 use App\Services\Posts\RemoveAttachmentService;
+use App\Services\Posts\SearchService;
 use App\Services\Posts\UpdateService;
 use App\Services\Sentiments\CreateOrUpdateService;
 use Illuminate\Http\Request;
@@ -119,6 +120,22 @@ class PostsController extends BaseController
         $data['attachment_id'] = $attachment_id;
 
         $response = $removeAttachmentService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param SearchService $searchService
+     * @return \Illuminate\Http\Response
+     */
+    public function search(
+        Request $request,
+        SearchService $searchService
+    ){
+        $data = $request->all();
+
+        $response = $searchService->handle($data);
 
         return $this->absorb($response)->respond();
     }
