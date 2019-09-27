@@ -138,6 +138,12 @@ class PostRepository extends BaseRepository
             'data' => [
                 'post' => $post,
             ],
+            'meta' => [
+                'count' => [
+                    'attachments' => $post->attachments()->count(),
+                    'comments' => $post->comments()->count(),
+                ],
+            ],
         ]);
     }
 
