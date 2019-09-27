@@ -120,7 +120,9 @@ class PostRepository extends BaseRepository
     public function fetch($id)
     {
         //region Existence check
-        $post =  $this->post_model->find($id);
+        $post =  $this->post_model
+            ->with(['comments'])
+            ->find($id);
 
         if (!$post) {
             return $this->setResponse([
