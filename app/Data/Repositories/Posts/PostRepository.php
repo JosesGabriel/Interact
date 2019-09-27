@@ -121,7 +121,7 @@ class PostRepository extends BaseRepository
     {
         //region Existence check
         $post =  $this->post_model
-            ->with(['comments'])
+            ->with(['comments', 'attachments'])
             ->find($id);
 
         if (!$post) {
