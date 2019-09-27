@@ -120,7 +120,14 @@ class PostRepository extends BaseRepository
     public function fetch($id)
     {
         //region Existence check
-        $post =  $this->post_model->find($id);
+        $post =  $this->post_model
+            ->with([
+                'comments' => function ($query) {
+                    $query->with(['comments'])->withCount(['comments']);
+                },
+                'attachments'
+            ])
+            ->find($id);
 
         if (!$post) {
             return $this->setResponse([
@@ -135,6 +142,12 @@ class PostRepository extends BaseRepository
             'message' => 'Successfully fetched post.',
             'data' => [
                 'post' => $post,
+            ],
+            'meta' => [
+                'count' => [
+                    'attachments' => $post->attachments()->count(),
+                    'comments' => $post->comments()->count(),
+                ],
             ],
         ]);
     }
