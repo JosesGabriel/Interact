@@ -3,6 +3,7 @@
 
 namespace App\Services\Posts;
 
+use App\Services\Attachments\CreateManyService;
 use App\Services\BaseService;
 use App\Data\Repositories\Posts\PostRepository;
 
@@ -14,23 +15,31 @@ use App\Data\Repositories\Posts\PostRepository;
 class CreateService extends BaseService
 {
     /**
+     * @var CreateManyService
+     */
+    private $create_attachments;
+
+    /**
      * @var PostRepository
      */
     protected $post_repo;
 
     /**
      * CreateService constructor.
+     * @param CreateManyService $createManyService
      * @param PostRepository $postRepository
      */
     public function __construct(
+        CreateManyService $createManyService,
         PostRepository $postRepository
     ){
+        $this->create_attachments = $createManyService;
         $this->post_repo = $postRepository;
     }
 
     /**
      * @param array $data
-     * @return PostRepository|CreateService
+     * @return \App\Data\Repositories\Attachments\AttachmentRepository|PostRepository|CreateManyService|CreateService
      */
     public function handle(array $data)
     {
@@ -57,6 +66,32 @@ class CreateService extends BaseService
         //endregion Data validation
 
         $response = $this->post_repo->create($data);
+
+        if ($response->isError()) {
+            return $response;
+        }
+
+        $post = ($response->getDataByKey('post'))->attributesToArray();
+
+        //region Create Attachments
+        if (isset($data['attachments'])) {
+            $attachments_data['attachable_id'] = $post['id'];
+            $attachments_data['attachable_type'] = config('arbitrage.attachments.model.attachable_type.post.value');
+            $attachments_data['user_id'] = $post['user_id'];
+            $attachments_data['url'] = $data['attachments'];
+
+            $attachments = $this->create_attachments->handle($attachments_data);
+
+            $post['attachments'] = $attachments->getDataByKey('attachments');
+            $response->addData('post', $post);
+
+            if ($attachments->isError()) {
+                $attachments->addData('post', $post);
+
+                return $attachments;
+            }
+        }
+        //endregion Create Attachments
 
         return $response;
     }
