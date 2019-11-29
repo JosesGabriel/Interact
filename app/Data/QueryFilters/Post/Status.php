@@ -3,7 +3,7 @@
 
 namespace App\Data\QueryFilters\Post;
 
-use Arbitrage\Abstracts\Pipelines\Eloquent\Filter;
+use App\Data\QueryFilters\BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @package App\Data\QueryFilters\Post
  */
-class Status extends Filter
+class Status extends BaseFilter
 {
     /**
      * @param Builder $builder
