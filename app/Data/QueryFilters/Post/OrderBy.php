@@ -1,17 +1,16 @@
 <?php
 
-
 namespace App\Data\QueryFilters\Post;
 
 use App\Data\QueryFilters\BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Class Status
+ * Class OrderBy
  *
  * @package App\Data\QueryFilters\Post
  */
-class Status extends BaseFilter
+class OrderBy extends BaseFilter
 {
     /**
      * @param Builder $builder
@@ -19,6 +18,7 @@ class Status extends BaseFilter
      */
     protected function applyFilter(Builder $builder): Builder
     {
-        return $builder->where('status', request('status'));
+        $direction = request('order') ?? 'DESC';
+        return $builder->orderBy(request('order_by'), $direction);
     }
 }

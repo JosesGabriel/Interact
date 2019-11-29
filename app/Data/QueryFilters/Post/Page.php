@@ -1,17 +1,16 @@
 <?php
 
-
 namespace App\Data\QueryFilters\Post;
 
 use App\Data\QueryFilters\BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Class Status
+ * Class Page
  *
  * @package App\Data\QueryFilters\Post
  */
-class Status extends BaseFilter
+class Page extends BaseFilter
 {
     /**
      * @param Builder $builder
@@ -19,6 +18,9 @@ class Status extends BaseFilter
      */
     protected function applyFilter(Builder $builder): Builder
     {
-        return $builder->where('status', request('status'));
+        $limit = request('limit') ?? config('arbitrage.posts.config.query.limit');
+        $page = request('page') ?? 1;
+        $offset = $limit * ($page - 1);
+        return $builder->limit($limit)->offset($offset);
     }
 }
