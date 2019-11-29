@@ -32,7 +32,7 @@ class UpdateService extends BaseService
      * @param array $data
      * @return UpdateService|mixed
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         //region Data validation
         if (!isset($data['id']) ||

@@ -32,7 +32,7 @@ class CreateService extends BaseService
      * @param array $data
      * @return CommentRepository|CreateService
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         //region Data validation
         if (!isset($data['post_id'])) {

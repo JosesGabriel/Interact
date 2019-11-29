@@ -32,7 +32,7 @@ class FetchService extends BaseService
      * @param array $data
      * @return PostRepository|FetchService
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         //region Data validation
         if (!isset($data['id']) ||

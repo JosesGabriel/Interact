@@ -32,7 +32,7 @@ class DeleteService extends BaseService
      * @param array $data
      * @return AttachmentRepository|DeleteService
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         //region Data validation
         if (!isset($data['id']) ||

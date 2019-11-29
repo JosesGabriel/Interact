@@ -32,7 +32,7 @@ class CreateManyService extends BaseService
      * @param array $data
      * @return AttachmentRepository|CreateManyService
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         $model_config = config('arbitrage.attachments.model');
 

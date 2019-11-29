@@ -42,7 +42,7 @@ class AddAttachmentService extends BaseService
      * @param array $data
      * @return \App\Data\Repositories\Attachments\AttachmentRepository|PostRepository|CreateAttachmentService|AddAttachmentService
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         //region Data validation
         if (!isset($data['id']) ||

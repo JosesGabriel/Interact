@@ -32,7 +32,7 @@ class SearchService extends BaseService
      * @param array $data
      * @return CommentRepository
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         $query = [];
 

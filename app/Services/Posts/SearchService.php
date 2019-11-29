@@ -32,7 +32,7 @@ class SearchService extends BaseService
      * @param array $data
      * @return PostRepository
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         $response = $this->post_repo->search($data);
 
