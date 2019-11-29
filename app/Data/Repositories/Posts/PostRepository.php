@@ -4,6 +4,7 @@
 namespace App\Data\Repositories\Posts;
 
 use App\Data\Models\Posts\Post;
+use App\Data\QueryFilters\Post\OrderBy;
 use App\Data\QueryFilters\Post\Page;
 use App\Data\QueryFilters\Post\Status;
 use App\Data\QueryFilters\Post\UserId;
@@ -169,6 +170,7 @@ class PostRepository extends BaseRepository
         $posts = app(Pipeline::class)
             ->send($query)
             ->through([
+                OrderBy::class,
                 Page::class,
                 Status::class,
                 UserId::class,
