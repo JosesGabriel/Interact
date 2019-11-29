@@ -32,7 +32,7 @@ class CreateService extends BaseService
      * @param array $data
      * @return AttachmentRepository|CreateService
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         $model_config = config('arbitrage.attachments.model');
         //region Data vaidation

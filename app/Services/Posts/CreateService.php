@@ -41,7 +41,7 @@ class CreateService extends BaseService
      * @param array $data
      * @return \App\Data\Repositories\Attachments\AttachmentRepository|PostRepository|CreateManyService|CreateService
      */
-    public function handle(array $data)
+    public function handle(array $data) : object
     {
         //region Data validation
         $valid_statuses = array_keys(config('arbitrage.posts.model.status'));
