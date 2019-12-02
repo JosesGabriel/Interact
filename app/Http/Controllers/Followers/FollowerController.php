@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Followers;
 
 use App\Http\Controllers\BaseController;
 use App\Services\Followers\FollowService;
+use App\Services\Followers\UnfollowService;
 use Illuminate\Http\Request;
 
 /**
@@ -29,6 +30,26 @@ class FollowerController extends BaseController
         $data['follow_id'] = $follow_id;
 
         $response = $followService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param UnfollowService $unfollowService
+     * @param $follow_id
+     * @return \Illuminate\Http\Response
+     */
+    public function unfollow(
+        Request $request,
+        UnfollowService $unfollowService,
+        $follow_id
+    ){
+        $data = $request->all();
+
+        $data['follow_id'] = $follow_id;
+
+        $response = $unfollowService->handle($data);
 
         return $this->absorb($response)->respond();
     }
