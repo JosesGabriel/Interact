@@ -65,7 +65,7 @@ class FollowerRepository extends BaseRepository
             $errors = $follower->getErrors();
             return $this->setResponse([
                 'status' => 500,
-                'message' => 'An error has occurred while saving the follower',
+                'message' => 'An error has occurred while saving the follow',
                 'meta' => [
                     'errors' => $errors,
                 ],
@@ -75,9 +75,9 @@ class FollowerRepository extends BaseRepository
 
         return $this->setResponse([
             'status' => 200,
-            'message' => 'Successfully created follower.',
+            'message' => 'Successfully created follow.',
             'data' => [
-                'follower' => $follower,
+                'follow' => $follower,
             ],
         ]);
     }
@@ -104,7 +104,7 @@ class FollowerRepository extends BaseRepository
             $errors = $follower->getErrors();
             return $this->setResponse([
                 'status' => 500,
-                'message' => 'An error has occurred while deleting the follower.',
+                'message' => 'An error has occurred while deleting the follow.',
                 'meta' => [
                     'errors' => $errors,
                 ],
@@ -114,7 +114,7 @@ class FollowerRepository extends BaseRepository
 
         return $this->setResponse([
             'status' => 200,
-            'message' => 'Successfully deleted follower.',
+            'message' => 'Successfully deleted follow.',
         ]);
     }
 
@@ -130,16 +130,16 @@ class FollowerRepository extends BaseRepository
         if (!$follower) {
             return $this->setResponse([
                 'status' => 404,
-                'message' => 'The follower does not exist.',
+                'message' => 'The follow does not exist.',
             ]);
         }
         //endregion Existence check
 
         return $this->setResponse([
             'status' => 200,
-            'message' => 'Successfully fetched follower.',
+            'message' => 'Successfully fetched follow.',
             'data' => [
-                'follower' => $follower,
+                'follow' => $follower,
             ],
         ]);
     }
@@ -194,13 +194,13 @@ class FollowerRepository extends BaseRepository
 
         return $this->setResponse([
             'status' => 200,
-            'message' => 'Successfully searched followers.',
+            'message' => 'Successfully searched follows.',
             'data' => [
-                'followers' => $followers,
+                'follows' => $followers,
             ],
             'meta' => [
                 'count' => [
-                    'followers' => $followers->count(),
+                    'follows' => $followers->count(),
                 ],
             ],
         ]);
