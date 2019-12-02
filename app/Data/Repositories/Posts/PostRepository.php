@@ -124,6 +124,8 @@ class PostRepository extends BaseRepository
         //region Existence check
         $post =  $this->post_model
             ->with([
+                'bears',
+                'bulls',
                 'comments' => function ($query) {
                     $query->with(['comments'])->withCount(['comments']);
                 },
