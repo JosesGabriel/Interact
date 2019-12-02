@@ -72,11 +72,38 @@ class FollowerRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return FollowerRepository
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        //region Data validation
+        if (!isset($id) ||
+            !is_numeric($id)) {
+            return $this->setResponse([
+                'status' => 417,
+                'message' => 'The follower id is not set or invalid.',
+            ]);
+        }
+        //endregion Data validation
+
+        //region Data deletion
+        $follower = $this->follower_model->find($id);
+        if (!$follower->delete()) {
+            $errors = $follower->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while deleting the follower.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data deletion
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully deleted follower.',
+        ]);
     }
 
     /**
