@@ -108,11 +108,28 @@ class FollowerRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return FollowerRepository
      */
     public function fetch($id)
     {
-        // TODO: Implement fetch() method.
+        //region Existence check
+        $follower =  $this->follower_model->find($id);
+
+        if (!$follower) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The follower does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched follower.',
+            'data' => [
+                'follower' => $follower,
+            ],
+        ]);
     }
 
     /**
