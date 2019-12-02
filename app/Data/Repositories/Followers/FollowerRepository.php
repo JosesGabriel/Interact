@@ -4,6 +4,7 @@ namespace App\Data\Repositories\Followers;
 
 use App\Data\Models\Followers\Follower;
 use App\Data\Repositories\BaseRepository;
+use Illuminate\Pipeline\Pipeline;
 
 /**
  * Class FollowerRepository
@@ -134,11 +135,34 @@ class FollowerRepository extends BaseRepository
 
     /**
      * @param array $data
-     * @return mixed
+     * @return FollowerRepository
      */
     public function search(array $data)
     {
-        // TODO: Implement search() method.
+        $query = Follower::query();
+
+        //region Data filter
+        $followers = app(Pipeline::class)
+            ->send($query)
+            ->through([
+
+            ])
+            ->thenReturn()
+            ->get();
+        //endregion Data filter
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully searched followers.',
+            'data' => [
+                'followers' => $followers,
+            ],
+            'meta' => [
+                'count' => [
+                    'followers' => $followers->count(),
+                ],
+            ],
+        ]);
     }
 
     /**
