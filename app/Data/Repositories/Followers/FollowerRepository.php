@@ -202,18 +202,14 @@ class FollowerRepository extends BaseRepository
      */
     public function unfollow($follow_id = '', $follower_id = '')
     {
-        $follow = $this->follower_model
-            ->where('user_id', $follow_id)
-            ->where('follower_id', $follower_id)
-            ->get();
-
         //region Existence check
-        if (!$follow->count()) {
-            return $this->setResponse([
-                'status' => 404,
-                'message' => 'The follow does not exist.',
-            ]);
+        $follow = $this->fetchByUsers($follow_id, $follower_id);
+
+        if ($follow->isError()) {
+            return $follow;
         }
+
+        $follow = $follow->getDataByKey('follow');
         //endregion Existence check
 
         //region Delete follow
