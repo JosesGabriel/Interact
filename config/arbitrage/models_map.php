@@ -6,6 +6,9 @@ return [
     'attachments' => [
         'attachment' => "$base\Attachments\Attachment",
     ],
+    'followers' => [
+        'follower' => "$base\Followers\Follower",
+    ],
     'posts' => [
         'post' => "$base\Posts\Post",
 
