@@ -49,6 +49,17 @@ class FollowerRepository extends BaseRepository
         }
         //endregion Data validation
 
+        //region Existence check
+        $follow = $this->fetchByUsers($data['user_id'], $data['follower_id']);
+
+        if ($follow->isSuccess()) {
+            return $this->setResponse([
+                'status' => 400,
+                'message' => 'Already following the user.',
+            ]);
+        }
+        //endregion Existence check
+
         //region Data insertion
         if (!$follower->save()) {
             $errors = $follower->getErrors();
