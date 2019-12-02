@@ -162,6 +162,8 @@ class PostRepository extends BaseRepository
     {
         $query = Post::query()
             ->with([
+                'bears',
+                'bulls',
                 'comments' => function ($query) {
                     $query->take(config('arbitrage.posts.config.relations.comments.max'));
                 },
