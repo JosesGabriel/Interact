@@ -124,10 +124,18 @@ class PostRepository extends BaseRepository
         //region Existence check
         $post =  $this->post_model
             ->with([
+                'attachments',
+                'bears',
+                'bulls',
                 'comments' => function ($query) {
                     $query->with(['comments'])->withCount(['comments']);
                 },
-                'attachments'
+            ])
+            ->withCount([
+                'attachments',
+                'bears',
+                'bulls',
+                'comments',
             ])
             ->find($id);
 
@@ -161,10 +169,20 @@ class PostRepository extends BaseRepository
     public function search(array $data)
     {
         $query = Post::query()
-            ->with(['comments' => function ($query) {
-                $query->take(config('arbitrage.posts.config.relations.comments.max'));
-            }])
-            ->withCount(['comments']);
+            ->with([
+                'attachments',
+                'bears',
+                'bulls',
+                'comments' => function ($query) {
+                    $query->take(config('arbitrage.posts.config.relations.comments.max'));
+                },
+            ])
+            ->withCount([
+                'attachments',
+                'bears',
+                'bulls',
+                'comments',
+            ]);
 
         //region Data filter
         $posts = app(Pipeline::class)
