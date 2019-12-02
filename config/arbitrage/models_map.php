@@ -13,4 +13,7 @@ return [
             'comment' => "$base\Posts\Comments\Comment",
         ],
     ],
+    'sentiments' => [
+        'sentiment' => "$base\Sentiments\Sentiment",
+    ],
 ];
