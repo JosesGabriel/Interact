@@ -134,6 +134,36 @@ class FollowerRepository extends BaseRepository
     }
 
     /**
+     * @param $follow_id
+     * @param $follower_id
+     * @return FollowerRepository
+     */
+    public function fetchByUsers($follow_id = '', $follower_id = '')
+    {
+        $follow = $this->follower_model
+            ->where('user_id', $follow_id)
+            ->where('follower_id', $follower_id)
+            ->get();
+
+        //region Existence check
+        if (!$follow->count()) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The follow does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched follow.',
+            'data' => [
+                'follow' => $follow,
+            ],
+        ]);
+    }
+
+    /**
      * @param array $data
      * @return FollowerRepository
      */
