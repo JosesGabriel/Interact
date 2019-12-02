@@ -161,9 +161,11 @@ class PostRepository extends BaseRepository
     public function search(array $data)
     {
         $query = Post::query()
-            ->with(['comments' => function ($query) {
-                $query->take(config('arbitrage.posts.config.relations.comments.max'));
-            }])
+            ->with([
+                'comments' => function ($query) {
+                    $query->take(config('arbitrage.posts.config.relations.comments.max'));
+                },
+            ])
             ->withCount(['comments']);
 
         //region Data filter
