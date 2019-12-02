@@ -131,6 +131,12 @@ class PostRepository extends BaseRepository
                     $query->with(['comments'])->withCount(['comments']);
                 },
             ])
+            ->withCount([
+                'attachments',
+                'bears',
+                'bulls',
+                'comments',
+            ])
             ->find($id);
 
         if (!$post) {
@@ -171,7 +177,12 @@ class PostRepository extends BaseRepository
                     $query->take(config('arbitrage.posts.config.relations.comments.max'));
                 },
             ])
-            ->withCount(['comments']);
+            ->withCount([
+                'attachments',
+                'bears',
+                'bulls',
+                'comments',
+            ]);
 
         //region Data filter
         $posts = app(Pipeline::class)
