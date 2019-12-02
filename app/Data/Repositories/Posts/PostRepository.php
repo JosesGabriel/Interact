@@ -164,6 +164,7 @@ class PostRepository extends BaseRepository
     {
         $query = Post::query()
             ->with([
+                'attachments',
                 'bears',
                 'bulls',
                 'comments' => function ($query) {
