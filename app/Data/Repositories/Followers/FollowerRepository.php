@@ -29,11 +29,45 @@ class FollowerRepository extends BaseRepository
 
     /**
      * @param array $data
-     * @return mixed
+     * @return FollowerRepository
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        $follower = $this->follower_model->init($data);
+
+        //region Data validation
+        if (!$follower->validate($data)) {
+            $errors = $follower->getErrors();
+            return $this->setResponse([
+                'status' => 400,
+                'message' => $errors[0],
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data validation
+
+        //region Data insertion
+        if (!$follower->save()) {
+            $errors = $follower->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while saving the follower',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data insertion
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully created follower.',
+            'data' => [
+                'follower' => $follower,
+            ],
+        ]);
     }
 
     /**
