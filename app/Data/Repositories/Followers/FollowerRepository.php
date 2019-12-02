@@ -166,6 +166,42 @@ class FollowerRepository extends BaseRepository
     }
 
     /**
+     * @param string $follow_id
+     * @param string $follower_id
+     * @return FollowerRepository
+     */
+    public function unfollow($follow_id = '', $follower_id = '')
+    {
+        $follow = $this->follower_model
+            ->where('user_id', $follow_id)
+            ->where('follower_id', $follower_id)
+            ->get();
+
+        //region Existence check
+        if (!$follow->count()) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The follow does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        //region Delete follow
+        if (!$this->follower_model->destroy($follow->pluck('id'))) {
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while deleting the follow.',
+            ]);
+        }
+        //endregion Delete follow
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully unfollowed the user.',
+        ]);
+    }
+
+    /**
      * @param $id
      * @param array $data
      * @return mixed
