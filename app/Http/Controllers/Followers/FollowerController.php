@@ -58,17 +58,17 @@ class FollowerController extends BaseController
     /**
      * @param Request $request
      * @param UserService $userService
-     * @param $follow_id
+     * @param $profile_id
      * @return \Illuminate\Http\Response
      */
     public function user(
         Request $request,
         UserService $userService,
-        $follow_id
+        $profile_id
     ){
         $data = $request->all();
 
-        $data['follow_id'] = $follow_id;
+        $data['profile_id'] = $profile_id;
 
         $response = $userService->handle($data);
 
