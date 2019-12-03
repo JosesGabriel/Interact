@@ -184,8 +184,8 @@ class FollowerRepository extends BaseRepository
     {
         //region Existence check
         $user = $this->follower_model
-            ->isFollower($profile_id, $viewer_id)
-            ->isFollowing($viewer_id, $profile_id)
+            ->myFollower($profile_id, $viewer_id)
+            ->imFollowing($profile_id, $viewer_id)
             ->profile($profile_id)
             ->first();
 

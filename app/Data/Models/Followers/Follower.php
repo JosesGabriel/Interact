@@ -39,19 +39,19 @@ class Follower extends BaseModel
     //region Scopes
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param $profile_id
      * @param $user_id
-     * @param $follower_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeIsFollower($query, $user_id, $follower_id)
+    public function scopeMyFollower($query, $profile_id, $user_id)
     {
         return $query->addSelect([
-            'is_follower' => function ($subquery) use ($user_id, $follower_id) {
+            'my_follower' => function ($subquery) use ($profile_id, $user_id) {
                 $subquery
                     ->selectRaw('count(*)')
                     ->from('followers')
                     ->where('user_id', $user_id)
-                    ->where('follower_id', $follower_id)
+                    ->where('follower_id', $profile_id)
                     ->first();
             },
         ]);
@@ -59,19 +59,19 @@ class Follower extends BaseModel
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param $follow_id
-     * @param $follower_id
+     * @param $profile_id
+     * @param $user_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeIsFollowing($query, $follow_id, $follower_id)
+    public function scopeImFollowing($query, $profile_id, $user_id)
     {
         return $query->addSelect([
-            'is_following' => function ($subquery) use ($follow_id, $follower_id) {
+            'im_following' => function ($subquery) use ($profile_id, $user_id) {
                 $subquery
                     ->selectRaw('count(*)')
                     ->from('followers')
-                    ->where('user_id', $follow_id)
-                    ->where('follower_id', $follower_id)
+                    ->where('user_id', $profile_id)
+                    ->where('follower_id', $user_id)
                     ->first();
             },
         ]);
