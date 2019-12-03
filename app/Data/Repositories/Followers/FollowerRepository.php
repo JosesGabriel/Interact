@@ -175,6 +175,28 @@ class FollowerRepository extends BaseRepository
     }
 
     /**
+     * @param $profile_id
+     * @param null $viewer_id
+     * @return FollowerRepository
+     */
+    public function fetchUserProfile($profile_id, $viewer_id = null)
+    {
+        $user = $this->follower_model
+            ->isFollower($profile_id, $viewer_id)
+            ->isFollowing($viewer_id, $profile_id)
+            ->profile($profile_id)
+            ->get();
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successful',
+            'data' => [
+                'user' => $user,
+            ],
+        ]);
+    }
+
+    /**
      * @param array $data
      * @return FollowerRepository
      */

@@ -17,6 +17,7 @@ Route::group([
     'namespace' => 'Followers',
     'prefix' => 'users',
 ], function () {
+    Route::get('{follow_id}', 'FollowerController@user');
     Route::post('{follow_id}/follow', 'FollowerController@follow');
     Route::delete('{follow_id}/unfollow','FollowerController@unfollow');
 });
