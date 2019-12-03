@@ -35,7 +35,7 @@ class UserService extends BaseService
     public function handle(array $data): object
     {
         //region Data validation
-        if (!isset($data['follow_id'])) {
+        if (!isset($data['profile_id'])) {
             return $this->setResponse([
                 'status' => 417,
                 'message' => 'The user id is not set or invalid.',
@@ -44,11 +44,11 @@ class UserService extends BaseService
         //endregion Data validation
 
         if (!isset($data['user_id']) ||
-            $data['follow_id'] == $data['user_id']) {
+            $data['profile_id'] == $data['user_id']) {
             $data['user_id'] = null;
         }
 
-        $response = $this->follower_repo->fetchUserProfile($data['follow_id'], $data['user_id']);
+        $response = $this->follower_repo->fetchUserProfile($data['profile_id'], $data['user_id']);
 
         return $response;
     }
