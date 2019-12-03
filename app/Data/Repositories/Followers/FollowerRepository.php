@@ -187,7 +187,7 @@ class FollowerRepository extends BaseRepository
             ->isFollowing($viewer_id, $profile_id)
             ->profile($profile_id)
             ->first();
-        
+
         if (!$user) {
             return $this->setResponse([
                 'status' => 404,
@@ -198,7 +198,7 @@ class FollowerRepository extends BaseRepository
 
         return $this->setResponse([
             'status' => 200,
-            'message' => 'Successful',
+            'message' => 'Successfully fetched user profile.',
             'data' => [
                 'user' => $user,
             ],
