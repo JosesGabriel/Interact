@@ -14,6 +14,14 @@ use Illuminate\Http\Request;
 */
 
 Route::group([
+    'namespace' => 'Followers',
+    'prefix' => 'users',
+], function () {
+    Route::post('{follow_id}/follow', 'FollowerController@follow');
+    Route::delete('{follow_id}/unfollow','FollowerController@unfollow');
+});
+
+Route::group([
     'namespace' => 'Posts',
     'prefix' => 'posts',
 ], function () {
