@@ -78,6 +78,7 @@ class Follower extends BaseModel
     }
 
     /**
+     * TODO: Separate Posts count for User
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param $user_id
      * @return \Illuminate\Database\Eloquent\Builder

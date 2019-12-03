@@ -175,6 +175,7 @@ class FollowerRepository extends BaseRepository
     }
 
     /**
+     * TODO: Separate Posts count for User
      * @param $profile_id
      * @param null $viewer_id
      * @return FollowerRepository
