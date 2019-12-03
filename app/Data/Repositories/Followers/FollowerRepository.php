@@ -181,11 +181,20 @@ class FollowerRepository extends BaseRepository
      */
     public function fetchUserProfile($profile_id, $viewer_id = null)
     {
+        //region Existence check
         $user = $this->follower_model
             ->isFollower($profile_id, $viewer_id)
             ->isFollowing($viewer_id, $profile_id)
             ->profile($profile_id)
-            ->get();
+            ->first();
+        
+        if (!$user) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The user profile is not found.',
+            ]);
+        }
+        //endregion Existence check
 
         return $this->setResponse([
             'status' => 200,
