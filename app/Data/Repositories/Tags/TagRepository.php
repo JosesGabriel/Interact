@@ -72,11 +72,39 @@ class TagRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return TagRepository
      */
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        //region Data validation
+        if (!isset($id) ||
+            !is_numeric($id)) {
+            return $this->setResponse([
+                'status' => 417,
+                'message' => 'The tag id is not set or invalid.',
+            ]);
+        }
+        //endregion Data validation
+
+        //region Data deletion
+        $tag = $this->tag_model->find($id);
+
+        if (!$tag->delete()) {
+            $errors = $tag->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while deleting the tag.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data deletion
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully deleted the tag.',
+        ]);
     }
 
     /**
