@@ -29,11 +29,45 @@ class TagRepository extends BaseRepository
 
     /**
      * @param array $data
-     * @return mixed
+     * @return TagRepository
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        $tag = $this->tag_model->init($data);
+
+        //region Data validation
+        if (!$tag->validate($data)) {
+            $errors = $tag->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => $errors[0],
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data validation
+
+        //region Data insertion
+        if (!$tag->save()) {
+            $errors = $tag->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while saving the tag.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data insertion
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully created tag.',
+            'data' => [
+                'tag' => $tag,
+            ],
+        ]);
     }
 
     /**
