@@ -145,10 +145,39 @@ class TagRepository extends BaseRepository
     /**
      * @param $id
      * @param array $data
-     * @return mixed
+     * @return TagRepository
      */
     public function update($id, array $data)
     {
-        // TODO: Implement update() method.
+        //region Existence check
+        $tag = $this->fetch($id);
+
+        if ($tag->isError()) {
+            return $tag;
+        }
+        //endregion Existence check
+
+        $tag = $tag->getDataByKey('tag');
+
+        //region Data update
+        if (!$tag->save($data)) {
+            $errors = $tag->getErrors();
+            return $this->setResponse([
+                'status' => 500,
+                'message' => 'An error has occurred while updating the tag.',
+                'meta' => [
+                    'errors' => $errors,
+                ],
+            ]);
+        }
+        //endregion Data update
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully updated the tag.',
+            'data' => [
+                'tag' => $tag,
+            ],
+        ]);
     }
 }
