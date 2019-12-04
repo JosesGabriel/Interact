@@ -109,11 +109,28 @@ class TagRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return mixed
+     * @return TagRepository
      */
     public function fetch($id)
     {
-        // TODO: Implement fetch() method.
+        //region Existence check
+        $tag = $this->tag_model->find($id);
+
+        if (!$tag) {
+            return $this->setResponse([
+                'status' => 404,
+                'message' => 'The tag does not exist.',
+            ]);
+        }
+        //endregion Existence check
+
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched tag.',
+            'data' => [
+                'tag' => $tag,
+            ],
+        ]);
     }
 
     /**
