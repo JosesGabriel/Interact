@@ -63,3 +63,10 @@ Route::group([
         Route::post('{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     });
 });
+
+Route::group([
+    'namespace' => 'Tags',
+    'prefix' => 'tag',
+], function () {
+    Route::post('/', 'TagController@create');
+});
