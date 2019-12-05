@@ -68,5 +68,6 @@ Route::group([
     'namespace' => 'Tags',
     'prefix' => 'tag',
 ], function () {
+    Route::delete('{id}', 'TagController@delete');
     Route::post('/', 'TagController@create');
 });

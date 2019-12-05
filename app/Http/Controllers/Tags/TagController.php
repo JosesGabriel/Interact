@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tags;
 
 use App\Http\Controllers\BaseController;
 use App\Services\Tags\CreateService;
+use App\Services\Tags\DeleteService;
 use Illuminate\Http\Request;
 
 /**
@@ -25,6 +26,22 @@ class TagController extends BaseController
         $data = $request->all();
 
         $response = $createService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param DeleteService $deleteService
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(
+        DeleteService $deleteService,
+        $id
+    ){
+        $data['id'] = $id;
+
+        $response = $deleteService->handle($data);
 
         return $this->absorb($response)->respond();
     }
