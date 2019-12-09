@@ -42,7 +42,9 @@ class CreateService extends BaseService
             ]);
         }
 
-        if (!isset($data['taggable_type'])) {
+        $valid_types = array_keys(config('arbitrage.tags.model.taggable_type'));
+        if (!isset($data['taggable_type']) ||
+            !in_array($data['taggable_type'], $valid_types)) {
             return $this->setResponse([
                 'status' => 400,
                 'message' => 'The taggable type is not set or invalid.',
