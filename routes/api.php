@@ -62,6 +62,12 @@ Route::group([
         Route::delete('un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
         Route::post('{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     });
+
+    Route::group([
+        'prefix' => '{id}/tags',
+    ], function () {
+        Route::post('/', 'PostsController@addTag');
+    });
 });
 
 Route::group([

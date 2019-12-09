@@ -45,6 +45,27 @@ class PostsController extends BaseController
 
     /**
      * @param Request $request
+     * @param \App\Services\Tags\CreateService $createService
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addTag(
+        Request $request,
+        \App\Services\Tags\CreateService $createService,
+        $id
+    ){
+        $data = $request->all();
+
+        $data['taggable_id'] = $id;
+        $data['taggable_type'] = config('arbitrage.tags.model.taggable_type.post.value');
+
+        $response = $createService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
      * @param CreateService $createService
      * @return \Illuminate\Http\Response
      */
