@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tags;
 
 use App\Http\Controllers\BaseController;
+use App\Services\Sentiments\CreateOrUpdateService as CreateSentimentService;
 use App\Services\Tags\CreateService;
 use App\Services\Tags\DeleteService;
 use Illuminate\Http\Request;
@@ -42,6 +43,30 @@ class TagController extends BaseController
         $data['id'] = $id;
 
         $response = $deleteService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param CreateSentimentService $createSentimentService
+     * @param $id
+     * @param $sentiment
+     * @return \Illuminate\Http\Response
+     */
+    public function sentimentalize(
+        Request $request,
+        CreateSentimentService $createSentimentService,
+        $id,
+        $sentiment
+    ){
+        $data = $request->all();
+
+        $data['sentimentable_id'] = $id;
+        $data['sentimentable_type'] = config('arbitrage.sentiments.model.sentimentable_type.tag.value');
+        $data['type'] = $sentiment;
+
+        $response = $createSentimentService->handle($data);
 
         return $this->absorb($response)->respond();
     }

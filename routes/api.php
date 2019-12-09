@@ -70,4 +70,10 @@ Route::group([
 ], function () {
     Route::delete('{id}', 'TagController@delete');
     Route::post('/', 'TagController@create');
+
+    Route::group([
+        'prefix' => '{id}',
+    ], function () {
+        Route::post('{sentiment}', 'TagController@sentimentalize')->where('sentiment', 'bear|bull');
+    });
 });
