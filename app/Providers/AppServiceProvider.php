@@ -25,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Relation::morphMap([
-            'comment' => config('modelmap.posts.comments.comment'),
-            'post' => config('modelmap.posts.post'),
+            'comment' => config('arbitrage.models_map.posts.comments.comment'),
+            'post' => config('arbitrage.models_map.posts.post'),
         ]);
     }
 }
