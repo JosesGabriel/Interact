@@ -62,4 +62,26 @@ Route::group([
         Route::delete('un{sentiment}', 'PostsController@unsentimentalize')->where('sentiment', 'bear|bull');
         Route::post('{sentiment}', 'PostsController@sentimentalize')->where('sentiment', 'bear|bull');
     });
+
+    Route::group([
+        'prefix' => '{id}/tags',
+    ], function () {
+        Route::delete('{tag_id}', 'PostsController@removeTag');
+        Route::post('/', 'PostsController@addTag');
+    });
+});
+
+Route::group([
+    'namespace' => 'Tags',
+    'prefix' => 'tag',
+], function () {
+    Route::delete('{id}', 'TagController@delete');
+    Route::post('/', 'TagController@create');
+
+    Route::group([
+        'prefix' => '{id}',
+    ], function () {
+        Route::delete('un{sentiment}', 'TagController@unsentimentalize')->where('sentiment', 'bear|bull');
+        Route::post('{sentiment}', 'TagController@sentimentalize')->where('sentiment', 'bear|bull');
+    });
 });

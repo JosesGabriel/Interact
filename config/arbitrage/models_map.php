@@ -19,4 +19,7 @@ return [
     'sentiments' => [
         'sentiment' => "$base\Sentiments\Sentiment",
     ],
+    'tags' => [
+        'tag' => "$base\Tags\Tag",
+    ],
 ];

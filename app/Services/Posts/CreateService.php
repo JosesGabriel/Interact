@@ -6,6 +6,7 @@ namespace App\Services\Posts;
 use App\Services\Attachments\CreateManyService;
 use App\Services\BaseService;
 use App\Data\Repositories\Posts\PostRepository;
+use App\Services\Tags\CreateService as CreateTagService;
 
 /**
  * Class CreateService
@@ -20,6 +21,11 @@ class CreateService extends BaseService
     private $create_attachments;
 
     /**
+     * @var CreateTagService
+     */
+    private $create_tag;
+
+    /**
      * @var PostRepository
      */
     protected $post_repo;
@@ -27,13 +33,16 @@ class CreateService extends BaseService
     /**
      * CreateService constructor.
      * @param CreateManyService $createManyService
+     * @param CreateTagService $createTagService
      * @param PostRepository $postRepository
      */
     public function __construct(
         CreateManyService $createManyService,
+        CreateTagService $createTagService,
         PostRepository $postRepository
     ){
         $this->create_attachments = $createManyService;
+        $this->create_tag = $createTagService;
         $this->post_repo = $postRepository;
     }
 
@@ -92,6 +101,27 @@ class CreateService extends BaseService
             }
         }
         //endregion Create Attachments
+
+        //region Create Tags
+        if (isset($data['tags'])) {
+            $tags_data = [
+                'taggable_id' => $post['id'],
+                'taggable_type' => config('arbitrage.tags.model.taggable_type.post.value'),
+                'tag_id' => $data['tags']['tag_id'],
+                'tag_type' => $data['tags']['tag_type'],
+            ];
+
+            $tag = $this->create_tag->handle($tags_data);
+
+            if ($tag->isError()) {
+                $tag->addData('post', $post);
+
+                return $tag;
+            }
+
+            $response->addData('tag', $tag->getDataByKey('tag'));
+        }
+        //endregion Create Tags
 
         return $response;
     }

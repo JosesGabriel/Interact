@@ -45,6 +45,27 @@ class PostsController extends BaseController
 
     /**
      * @param Request $request
+     * @param \App\Services\Tags\CreateService $createService
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addTag(
+        Request $request,
+        \App\Services\Tags\CreateService $createService,
+        $id
+    ){
+        $data = $request->all();
+
+        $data['taggable_id'] = $id;
+        $data['taggable_type'] = config('arbitrage.tags.model.taggable_type.post.value');
+
+        $response = $createService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
      * @param CreateService $createService
      * @return \Illuminate\Http\Response
      */
@@ -120,6 +141,28 @@ class PostsController extends BaseController
         $data['attachment_id'] = $attachment_id;
 
         $response = $removeAttachmentService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param \App\Services\Tags\DeleteService $deleteService
+     * @param $id
+     * @param $tag_id
+     * @return \Illuminate\Http\Response
+     */
+    public function removeTag(
+        Request $request,
+        \App\Services\Tags\DeleteService $deleteService,
+        $id,
+        $tag_id
+    ){
+        $data = $request->all();
+
+        $data['id'] = $tag_id;
+
+        $response = $deleteService->handle($data);
 
         return $this->absorb($response)->respond();
     }
