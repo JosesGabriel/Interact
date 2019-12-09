@@ -10,6 +10,10 @@ return [
             'label' => 'post',
             'value' => 'post',
         ],
+        'tag' => [
+            'label' => 'tag',
+            'value' => 'tag',
+        ],
     ],
     'type' => [
         'bear' => [
