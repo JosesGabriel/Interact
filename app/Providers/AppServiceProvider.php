@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'comment' => config('arbitrage.models_map.posts.comments.comment'),
             'post' => config('arbitrage.models_map.posts.post'),
+            'tag' => config('arbitrage.models_map.tags.tag'),
         ]);
     }
 }
