@@ -118,6 +118,8 @@ class CreateService extends BaseService
 
                 return $tag;
             }
+
+            $response->addData('tag', $tag->getDataByKey('tag'));
         }
         //endregion Create Tags
 
