@@ -40,6 +40,11 @@ class Tag extends BaseModel
     //endregion Configs
 
     //region Relations
+    public function sentiments()
+    {
+        return $this->hasMany(config('arbitrage.models_map.tags.tag'), 'sentimentable');
+    }
+
     public function taggable()
     {
         return $this->morphTo();
