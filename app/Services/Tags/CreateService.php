@@ -42,24 +42,21 @@ class CreateService extends BaseService
             ]);
         }
 
-        if (!isset($data['taggable_type']) ||
-            !is_numeric($data['taggable_type'])) {
+        if (!isset($data['taggable_type'])) {
             return $this->setResponse([
                 'status' => 400,
                 'message' => 'The taggable type is not set or invalid.',
             ]);
         }
 
-        if (!isset($data['tag_id']) ||
-            !is_numeric($data['tag_id'])) {
+        if (!isset($data['tag_id'])) {
             return $this->setResponse([
                 'status' => 400,
                 'message' => 'The tag id is not set or invalid.',
             ]);
         }
 
-        if (!isset($data['tag_type']) ||
-            !is_numeric($data['tag_type'])) {
+        if (!isset($data['tag_type'])) {
             return $this->setResponse([
                 'status' => 400,
                 'message' => 'The tag type is not set or invalid.',
