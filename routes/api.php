@@ -66,6 +66,7 @@ Route::group([
     Route::group([
         'prefix' => '{id}/tags',
     ], function () {
+        Route::delete('{tag_id}', 'PostsController@removeTag');
         Route::post('/', 'PostsController@addTag');
     });
 });

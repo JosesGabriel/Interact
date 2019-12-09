@@ -147,6 +147,28 @@ class PostsController extends BaseController
 
     /**
      * @param Request $request
+     * @param \App\Services\Tags\DeleteService $deleteService
+     * @param $id
+     * @param $tag_id
+     * @return \Illuminate\Http\Response
+     */
+    public function removeTag(
+        Request $request,
+        \App\Services\Tags\DeleteService $deleteService,
+        $id,
+        $tag_id
+    ){
+        $data = $request->all();
+
+        $data['id'] = $tag_id;
+
+        $response = $deleteService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
      * @param SearchService $searchService
      * @return \Illuminate\Http\Response
      */
