@@ -51,7 +51,7 @@ class Tag extends BaseModel
         return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
             ->where('type', config('arbitrage.sentiments.model.type.bull.value'));
     }
-    
+
     public function sentiments()
     {
         return $this->hasMany(config('arbitrage.models_map.tags.tag'), 'sentimentable');
