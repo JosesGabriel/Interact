@@ -54,7 +54,7 @@ class Tag extends BaseModel
 
     public function sentiments()
     {
-        return $this->hasMany(config('arbitrage.models_map.tags.tag'), 'sentimentable');
+        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable');
     }
 
     public function taggable()
