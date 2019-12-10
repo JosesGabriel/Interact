@@ -40,9 +40,21 @@ class Tag extends BaseModel
     //endregion Configs
 
     //region Relations
+    public function bears()
+    {
+        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
+            ->where('type', config('arbitrage.sentiments.model.type.bear.value'));
+    }
+
+    public function bulls()
+    {
+        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
+            ->where('type', config('arbitrage.sentiments.model.type.bull.value'));
+    }
+
     public function sentiments()
     {
-        return $this->hasMany(config('arbitrage.models_map.tags.tag'), 'sentimentable');
+        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable');
     }
 
     public function taggable()

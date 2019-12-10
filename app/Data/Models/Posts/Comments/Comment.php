@@ -49,9 +49,26 @@ class Comment extends BaseModel
     //endregion Configs
 
     //region Relations
+    public function bears()
+    {
+        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
+            ->where('type', config('arbitrage.sentiments.model.type.bear.value'));
+    }
+
+    public function bulls()
+    {
+        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
+            ->where('type', config('arbitrage.sentiments.model.type.bull.value'));
+    }
+
     public function post()
     {
         return $this->belongsTo(config('modelmap.posts.post'));
+    }
+
+    public function sentiments()
+    {
+        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable');
     }
 
     public function comments()
