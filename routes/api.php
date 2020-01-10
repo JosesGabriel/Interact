@@ -85,3 +85,10 @@ Route::group([
         Route::post('{sentiment}', 'TagController@sentimentalize')->where('sentiment', 'bear|bull');
     });
 });
+
+Route::group([
+    'prefix' => 'sentiments',
+], function () {
+    Route::post('/', 'ChartSentimentController@sentimentalize');
+    Route::get('/', 'ChartSentimentController@get_sentiment');
+});
