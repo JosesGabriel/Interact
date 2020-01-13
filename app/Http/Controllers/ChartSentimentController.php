@@ -14,6 +14,10 @@ class ChartSentimentController extends BaseController
     ){
         $data = $request->all();
         $data['action'] = "add";
+        $data['stock_id'] = $data['query']['stock_id'];
+        $data['market_code'] = $data['query']['market_code'];
+        $data['sentiment'] = $data['query']['sentiment'];
+        $data['user_id'] = $data['query']['user_id'];
         $response = $chartSentiment->handle($data);
 
         return $this->absorb($response)->respond();
@@ -26,6 +30,9 @@ class ChartSentimentController extends BaseController
     {
         $data = $request->all();
         $data['action'] = "get";
+        $data['stock_id'] = $data['query']['stock_id'];
+        $data['market_code'] = $data['query']['market_code'];
+        $data['user_id'] = $data['query']['user_id'];
         $response = $chartSentiment->handle($data);
 
         return $this->absorb($response)->respond();
