@@ -271,6 +271,8 @@ class SentimentRepository extends BaseRepository
         $erros = [];
         if (!$chart_sentiment->validate($data)) {
             $errors = $chart_sentiment->getErrors();
+            $erros['isgo'] = false;
+            $erros['errors'] = $errors;
             // return $this->setResponse([
             //     'status' => 417,
             //     'message' => $errors[0],
@@ -278,22 +280,20 @@ class SentimentRepository extends BaseRepository
             //         'errors' => $errors,
             //     ],
             // ]);
-            return false;
+            return $erros;
         }
 
         if (!$chart_sentiment->save()) {
             $errors = $chart_sentiment->getErrors();
-            // return $this->setResponse([
-            //     'status' => 500,
-            //     'message' => 'An error has occurred while saving the chart_sentiment.',
-            //     'meta' => [
-            //         'errors' => $errors,
-            //     ],
-            // ]);
-            return false;
+            $erros['isgo'] = false;
+            $erros['errors'] = $errors;
+            return $erros;
         }
 
-        return true;
+        $erros['isgo'] = true;
+        $erros['errors'] = "no errors";
+
+        return $erros;
     }
 
     public function get_chart_sentiments(array $data)
