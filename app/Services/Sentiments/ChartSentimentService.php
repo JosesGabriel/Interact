@@ -35,6 +35,12 @@ class ChartSentimentService extends BaseService
      */
     public function handle(array $data) : object
     {
+        if(!isset($data['stock_id'])){
+            return $this->setResponse([
+                'status' => 400,
+                'message' => 'Missing Stock ID'
+            ]);
+        }
         if($data['action'] == "add"){
             // check if the user already added a stock sentiment per day
             // true -> sentiment already added

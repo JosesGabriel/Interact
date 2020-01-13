@@ -31,4 +31,6 @@ class ChartSentimentController extends BaseController
         return $this->absorb($response)->respond();
 
     }
+
+    
 }

@@ -92,3 +92,9 @@ Route::group([
     Route::post('/', 'ChartSentimentController@sentimentalize');
     Route::get('/', 'ChartSentimentController@get_sentiment');
 });
+
+Route::group([
+    'prefix' => 'trending',
+], function () {
+    Route::get('/', 'TrendingController@trending');
+});

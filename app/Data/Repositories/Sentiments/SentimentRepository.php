@@ -348,4 +348,6 @@ class SentimentRepository extends BaseRepository
 
         return $sentiment;
     }
+
+    
 }
