@@ -71,6 +71,15 @@ class ChartSentimentService extends BaseService
                 ]);
             }
         } else {
+            $sentis = [];
+            $checking = $this->chartsentiment_repo->check_chart($data);
+            if(!$checking){
+                $sentis['message'] = "No sentiments were added";
+                $sentis['can_add'] = true;
+            } else {
+                $sentis['message'] = "sentiments were added";
+                $sentis['can_add'] = false;
+            }
             $sentiment_value = $this->chartsentiment_repo->get_chart_sentiments($data);
 
             return $this->setResponse([
@@ -78,6 +87,7 @@ class ChartSentimentService extends BaseService
                 'message' => 'Successfully fetched sentiment.',
                 'data' => [
                     'sentiment' => $sentiment_value,
+                    'user_stats' => $sentis
                 ],
             ]);
         }
