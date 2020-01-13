@@ -268,28 +268,32 @@ class SentimentRepository extends BaseRepository
     public function add_chart_sentiment(array $data)
     {
         $chart_sentiment = $this->chart_sentiment_model->init($data);
-
+        $erros = [];
         if (!$chart_sentiment->validate($data)) {
             $errors = $chart_sentiment->getErrors();
-            return $this->setResponse([
-                'status' => 417,
-                'message' => $errors[0],
-                'meta' => [
-                    'errors' => $errors,
-                ],
-            ]);
+            // return $this->setResponse([
+            //     'status' => 417,
+            //     'message' => $errors[0],
+            //     'meta' => [
+            //         'errors' => $errors,
+            //     ],
+            // ]);
+            return false;
         }
 
         if (!$chart_sentiment->save()) {
             $errors = $chart_sentiment->getErrors();
-            return $this->setResponse([
-                'status' => 500,
-                'message' => 'An error has occurred while saving the chart_sentiment.',
-                'meta' => [
-                    'errors' => $errors,
-                ],
-            ]);
+            // return $this->setResponse([
+            //     'status' => 500,
+            //     'message' => 'An error has occurred while saving the chart_sentiment.',
+            //     'meta' => [
+            //         'errors' => $errors,
+            //     ],
+            // ]);
+            return false;
         }
+
+        return true;
     }
 
     public function get_chart_sentiments(array $data)
