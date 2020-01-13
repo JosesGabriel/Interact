@@ -40,7 +40,7 @@ class DataProvider extends BaseProvider
             'Authorization' => "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfbmFtZSI6IjRSQjErUjQ5MyJ9.SZzdF4-L3TwqaGxfb8sR-xeBWWHmGyM4SCuBc1ffWUs"
         ];
         $url = $this->generateUrlFromConfig($config, $data);
-        $response = $this->addHeaderRequest($headers)->requestWithClientCreds($data)->request($url, $config['method']);
+        $response = $this->requestWithBearerToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfbmFtZSI6IjRSQjErUjQ5MyJ9.SZzdF4-L3TwqaGxfb8sR-xeBWWHmGyM4SCuBc1ffWUs")->requestWithClientCreds($data)->request($url, $config['method']);
 
         return $this->absorbOwnApiResponse($response);
     }

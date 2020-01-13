@@ -38,7 +38,8 @@ class ChartSentimentService extends BaseService
         if(!isset($data['stock_id'])){
             return $this->setResponse([
                 'status' => 400,
-                'message' => 'Missing Stock ID'
+                'message' => 'Missing Stock ID',
+                'data' => $data
             ]);
         }
         if($data['action'] == "add"){

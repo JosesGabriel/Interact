@@ -87,8 +87,7 @@ class TrendingRepository extends BaseRepository
         $stocks = []; // list of stocks
         
         $trending_days = 182;
-        $limit = (isset($data['count']) ? $data['count'] : 10) ;
-        dump($limit);
+        $limit = (isset($data['count']) ? $data['count'] : 10);
 
         // post tags
         $post_stocks = $this->post_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
@@ -132,15 +131,18 @@ class TrendingRepository extends BaseRepository
         $stock_information = [];
         $counter = 0;
         foreach ($final_stock_list as $key => $value) {
-            // $response = $this->data_provider->handle([
-            //     'uri' => "api/v1/stocks/history/latest?exchange=PSE&symbol=".$value,
-            //     "method" => "GET"
-            // ], [])->getResponse();
+            $response = $this->data_provider->handle([
+                'uri' => "https://dev-api.arbitrage.ph/api/v1/stocks/history/latest?exchange=PSE&symbol=".$key,
+                "method" => "GET"
+            ], [])->getResponse();
 
-            // if($counter == 2){
-            //     break;
-            // }
-            // $counter++;
+            
+            dump($response);
+
+            if($counter == 2){
+                break;
+            }
+            $counter++;
         }
 
         // $response = $this->data_provider->handle([
