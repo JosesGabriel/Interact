@@ -17,6 +17,7 @@ class ChartSentimentController extends BaseController
         $data['stock_id'] = $data['query']['stock_id'];
         $data['market_code'] = $data['query']['market_code'];
         $data['type'] = $data['query']['sentiment'];
+        $data['sentiment'] = $data['query']['sentiment'];
         $data['user_id'] = $data['query']['user_id'];
         $response = $chartSentiment->handle($data);
 
