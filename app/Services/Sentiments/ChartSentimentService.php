@@ -49,7 +49,7 @@ class ChartSentimentService extends BaseService
             $checking = $this->chartsentiment_repo->check_chart($data);
             if(!$checking){ // add sentiment if returns false
                 $data['type'] = $data['sentiment'];
-                $adding_sentiment = $this->chartsentiment_repo->add_chart_sentiment($data['query']);
+                $adding_sentiment = $this->chartsentiment_repo->add_chart_sentiment($data);
                 
                 if(!$adding_sentiment['isgo']){
                     return $this->setResponse([
@@ -67,6 +67,7 @@ class ChartSentimentService extends BaseService
                     'message' => 'Successfully added a sentiment.',
                     'data' => [
                         'sentiment' => $sentiment_value,
+                        'data' => 
                     ],
                 ]);
             } else{
