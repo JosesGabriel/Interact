@@ -81,7 +81,7 @@ class TrendingRepository extends BaseRepository
 
     }
 
-    public function get_trending()
+    public function get_trending($data)
     {
         // init vals 
         $stocks = []; // list of stocks
