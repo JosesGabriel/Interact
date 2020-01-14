@@ -143,7 +143,7 @@ class TrendingRepository extends BaseRepository
             if(!empty($array_key)){
                 $data_info = $response['data'][$array_key];
                 
-                $trendinfo['stock_id'] = $data_info->stockid;
+                $trendinfo['stock_id'] = $data_info->stockidstr;
                 $trendinfo['market_code'] = $data_info->market_code;
                 $trendinfo['description'] = $data_info->description;
                 $trendinfo['hits'] = $value;
