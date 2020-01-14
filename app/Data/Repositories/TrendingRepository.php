@@ -87,7 +87,7 @@ class TrendingRepository extends BaseRepository
         $stocks = []; // list of stocks
         
         $trending_days = 182;
-        $limit = (isset($data['count']) ? $data['count'] : 10);
+        $limit = (isset($data['count']) ? $data['count'] : 5);
 
         // post tags
         $post_stocks = $this->post_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
@@ -128,33 +128,42 @@ class TrendingRepository extends BaseRepository
 
         array_multisort($final_stock_list, SORT_DESC); // get list of trending stocks
 
+
+        $response = $this->data_provider->handle([
+            'uri' => "https://data-api.arbitrage.ph/api/v2/stocks/history/latest?exchange=PSE&type=stock",
+            "method" => "GET"
+        ], [])->getResponse();
+
         $stock_information = [];
         $counter = 0;
         foreach ($final_stock_list as $key => $value) {
-            $response = $this->data_provider->handle([
-                'uri' => "https://dev-api.arbitrage.ph/api/v1/stocks/history/latest?exchange=PSE&symbol=".$key,
-                "method" => "GET"
-            ], [])->getResponse();
+            $trendinfo = [];
+            $array_key = array_search($key, array_column($response['data'], 'symbol'));
 
-            
-            dump($response);
+            if(!empty($array_key)){
+                $data_info = $response['data'][$array_key];
+                
+                $trendinfo['stock_id'] = $data_info->stockid;
+                $trendinfo['market_code'] = $data_info->market_code;
+                $trendinfo['description'] = $data_info->description;
+                $trendinfo['hits'] = $value;
 
-            if($counter == 2){
+                array_push($stock_information, $trendinfo);
+                $counter++;
+            }
+            if($counter == $limit){
                 break;
             }
-            $counter++;
+            
         }
 
-        // $response = $this->data_provider->handle([
-        //     'uri' => "/api/v2/stocks/history/latest?symbol-id=".$value['stock_id'],
-        //     'uri' => "api/v1/stocks/history/latest?exchange=PSE&symbol=DAVIN".$value['stock_id'],
-        //     "method" => "GET"
-        // ], [])->getResponse();
-
-
-
-        
-        dump($final_stock_list);
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched trending stocks.',
+            'data' => [
+                'stocks' => $stock_information
+            ],
+        ]);
     }
 
     public function multiexplode ($delimiters,$string) {

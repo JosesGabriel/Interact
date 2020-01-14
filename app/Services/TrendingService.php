@@ -35,15 +35,7 @@ class TrendingService extends BaseService
      */
     public function handle(array $data) : object
     {
-        
-
         $trending_stocks = $this->trending_repo->get_trending($data);
-
-
-        
-
-        exit;
-
-        
+        return $trending_stocks;
     }
 }
