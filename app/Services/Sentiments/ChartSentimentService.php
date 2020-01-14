@@ -67,7 +67,7 @@ class ChartSentimentService extends BaseService
                     'message' => 'Successfully added a sentiment.',
                     'data' => [
                         'sentiment' => $sentiment_value,
-                        'data' => 
+                        'data' => $data
                     ],
                 ]);
             } else{
