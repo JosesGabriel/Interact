@@ -97,4 +97,5 @@ Route::group([
     'prefix' => 'trending',
 ], function () {
     Route::get('/', 'TrendingController@trending');
+    Route::get('/users', 'TrendingController@users');
 });

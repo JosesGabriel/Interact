@@ -172,5 +172,39 @@ class TrendingRepository extends BaseRepository
         $launch = explode($delimiters[0], $ready);
         return  $launch;
     }
+
+    public function get_users($data)
+    {
+        $trending_days = 90;
+        $limit = (isset($data['count']) ? $data['count'] : 5);
+        $post_stocks = $this->post_model->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
+
+        if(empty($post_stocks)){
+            return $this->setResponse([
+                'status' => 400,
+                'message' => 'No Activity for the past '.$trending_days.' days',
+                'data' => [],
+            ]);
+        }
+
+        $user_list = [];
+        foreach ($post_stocks as $key => $value) { array_push($user_list, $value['user_id']); }
+
+        $user_list_unique = array_unique($user_list);
+        $user_counter = [];
+        foreach ($user_list_unique as $key => $value) { $user_counter[$value] = 0; }
+        foreach ($user_list as $key => $value) { $user_counter[$value]++; }
+        arsort($user_counter);
+
+        $final_list = array_slice($user_counter, 0, $limit);
+        
+        return $this->setResponse([
+            'status' => 200,
+            'message' => 'Successfully fetched Suggested Users.',
+            'data' => [
+                'users' => $final_list
+            ],
+        ]);
+    }
     
 }

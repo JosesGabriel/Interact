@@ -35,7 +35,14 @@ class TrendingService extends BaseService
      */
     public function handle(array $data) : object
     {
-        $trending_stocks = $this->trending_repo->get_trending($data);
+        if(isset($data['type'])){
+            if($data['type'] == "users"){
+                $trending_stocks = $this->trending_repo->get_users($data);
+            }
+        } else {
+            $trending_stocks = $this->trending_repo->get_trending($data);
+        }
+        
         return $trending_stocks;
     }
 }

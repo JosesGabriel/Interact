@@ -18,4 +18,16 @@ class TrendingController extends BaseController
 
         return $this->absorb($response)->respond();
     }
+
+    public function users(
+        Request $request,
+        TrendingService $trendingService
+    )
+    {
+        $data = $request->all();
+        $data['type'] = "users";
+        $response = $trendingService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
 }
