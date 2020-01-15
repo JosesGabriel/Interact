@@ -193,6 +193,14 @@ class FollowerRepository extends BaseRepository
             return $this->setResponse([
                 'status' => 404,
                 'message' => 'The user profile is not found.',
+                'data' => [
+                    'user' => [
+                        'my_follower' => 0,
+                        'im_following' => 0,
+                        'followers' => 0,
+                        'following' => 0,
+                    ],
+                ],
             ]);
         }
         //endregion Existence check

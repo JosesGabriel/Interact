@@ -1,17 +1,16 @@
 <?php
 
-
 namespace App\Data\QueryFilters\Post;
 
 use App\Data\QueryFilters\BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Class UserId
+ * Class AuthorId
  *
  * @package App\Data\QueryFilters\Post
  */
-class UserId extends BaseFilter
+class AuthorId extends BaseFilter
 {
     /**
      * @param Builder $builder
@@ -19,6 +18,6 @@ class UserId extends BaseFilter
      */
     protected function applyFilter(Builder $builder): Builder
     {
-        return $builder->where('user_id', request('user_id'));
+        return $builder->where('user_id', request('author_id'));
     }
 }
