@@ -17,7 +17,7 @@ class CreateSentimentsTable extends Migration
             $table->bigInteger('id')->primary();
             $table->bigInteger('sentimentable_id')->index();
             $table->string('sentimentable_type');
-            $table->string('user_id');
+            $table->uuid('user_id');
             $table->string('type');
             $table->timestamps();
         });

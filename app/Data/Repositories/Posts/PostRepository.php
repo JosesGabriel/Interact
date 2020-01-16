@@ -4,10 +4,10 @@
 namespace App\Data\Repositories\Posts;
 
 use App\Data\Models\Posts\Post;
+use App\Data\QueryFilters\Post\AuthorId;
 use App\Data\QueryFilters\Post\OrderBy;
 use App\Data\QueryFilters\Post\Page;
 use App\Data\QueryFilters\Post\Status;
-use App\Data\QueryFilters\Post\UserId;
 use App\Data\QueryFilters\Post\Visibility;
 use App\Data\QueryFilters\Post\WallId;
 use App\Data\Repositories\BaseRepository;
@@ -188,10 +188,10 @@ class PostRepository extends BaseRepository
         $posts = app(Pipeline::class)
             ->send($query)
             ->through([
+                AuthorId::class,
                 OrderBy::class,
                 Page::class,
                 Status::class,
-                UserId::class,
                 Visibility::class,
                 WallId::class,
             ])
