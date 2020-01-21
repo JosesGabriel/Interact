@@ -75,5 +75,10 @@ class Post extends BaseModel
     {
         return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable');
     }
+
+    public function tags()
+    {
+        return $this->morphMany(config('arbitrage.models_map.tags.tag'), 'taggable');
+    }
     //endregion Relations
 }
