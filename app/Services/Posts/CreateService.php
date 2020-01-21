@@ -81,6 +81,7 @@ class CreateService extends BaseService
         }
 
         $post = ($response->getDataByKey('post'))->attributesToArray();
+        $post_model = $response->getDataByKey('post');
 
         //region Create Attachments
         if (isset($data['attachments'])) {
@@ -103,23 +104,21 @@ class CreateService extends BaseService
         //endregion Create Attachments
 
         //region Create Tags
-        if (isset($data['tags'])) {
-            $tags_data = [
-                'taggable_id' => $post['id'],
-                'taggable_type' => config('arbitrage.tags.model.taggable_type.post.value'),
-                'tag_id' => $data['tags']['tag_id'],
-                'tag_type' => $data['tags']['tag_type'],
-            ];
+        if (isset($data['tags']) &&
+            is_array($data['tags'])) {
 
-            $tag = $this->create_tag->handle($tags_data);
+            $post_id = $post['id'];
+            $taggable_type = config('arbitrage.tags.model.taggable_type.post.value');
 
-            if ($tag->isError()) {
-                $tag->addData('post', $post);
-
+            $tags = collect($data['tags'])->map(function ($tag) use ($post_id, $taggable_type) {
+                $tag['taggable_id'] = $post_id;
+                $tag['taggable_type'] = $taggable_type;
                 return $tag;
-            }
+            });
 
-            $response->addData('tag', $tag->getDataByKey('tag'));
+            $post_model->tags()->createMany($tags);
+
+            $response->addData('tags', $tags);
         }
         //endregion Create Tags
 
