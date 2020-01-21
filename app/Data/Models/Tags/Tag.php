@@ -20,6 +20,7 @@ class Tag extends BaseModel
     protected $casts = [
         'id' => 'string',
         'taggable_id' => 'string',
+        'tag_meta' => 'array',
     ];
 
     protected $fillable = [
@@ -27,6 +28,7 @@ class Tag extends BaseModel
         'taggable_type',
         'tag_id',
         'tag_type',
+        'tag_meta'
     ];
 
     protected $hidden = [];
@@ -36,6 +38,7 @@ class Tag extends BaseModel
         'taggable_type' => 'sometimes|required',
         'tag_id' => 'sometimes|required',
         'tag_type' => 'sometimes|required',
+        'tag_meta' => 'sometimes|array',
     ];
     //endregion Configs
 
