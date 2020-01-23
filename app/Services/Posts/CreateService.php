@@ -3,6 +3,7 @@
 
 namespace App\Services\Posts;
 
+use App\Events\Posts\UserPostedEvent;
 use App\Services\Attachments\CreateManyService;
 use App\Services\BaseService;
 use App\Data\Repositories\Posts\PostRepository;
@@ -121,6 +122,10 @@ class CreateService extends BaseService
             $response->addData('tags', $tags);
         }
         //endregion Create Tags
+
+        //region Fire event
+        event(new UserPostedEvent($post_model));
+        //endregion Fire event
 
         return $response;
     }
