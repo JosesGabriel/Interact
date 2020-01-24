@@ -23,6 +23,7 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\Sentiments\UserSentimentedEvent::class => [
             \App\Listeners\Sentiments\Posts\NewSentimentNotification::class,
             \App\Listeners\Sentiments\Posts\AuthorSentimentNotification::class,
+            \App\Listeners\Sentiments\Comments\NewSentimentNotification::class,
         ],
     ];
 
