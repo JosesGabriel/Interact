@@ -5,6 +5,7 @@ namespace App\Data\Models\Posts\Comments;
 
 use App\Data\Models\BaseModel;
 use App\Data\Models\Sentiments\HasSentiments;
+use App\Data\Models\Tags\HasTags;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Snowflake\HasSnowflakePrimary;
 
@@ -17,6 +18,7 @@ class Comment extends BaseModel
 {
     use HasSentiments;
     use HasSnowflakePrimary;
+    use HasTags;
     use SoftDeletes;
 
     //region Configs
