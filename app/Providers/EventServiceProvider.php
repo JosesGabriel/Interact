@@ -20,6 +20,7 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\Posts\MentionNotification::class,
         ],
         \App\Events\Posts\Comments\UserCommentedEvent::class => [
+            \App\Listeners\Posts\Comments\MentionNotification::class,
             \App\Listeners\Posts\Comments\NewCommentNotification::class,
             \App\Listeners\Posts\Comments\ParentAuthorNotification::class,
         ],
