@@ -47,6 +47,6 @@ class NewCommentNotification implements ShouldQueue
                     'id' => $comment->post_id,
                 ],
             ],
-        ], 'social.post');
+        ], 'social.post.comment');
     }
 }
