@@ -17,7 +17,7 @@ class UserCommentedEvent
     /**
      * @var Comment
      */
-    private $comment;
+    public $comment;
 
     /**
      * UserCommentedEvent constructor.
