@@ -4,6 +4,7 @@
 namespace App\Data\Models\Posts;
 
 use App\Data\Models\BaseModel;
+use App\Data\Models\Sentiments\HasSentiments;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Snowflake\HasSnowflakePrimary;
 
@@ -14,6 +15,7 @@ use Snowflake\HasSnowflakePrimary;
  */
 class Post extends BaseModel
 {
+    use HasSentiments;
     use HasSnowflakePrimary;
     use SoftDeletes;
 
@@ -54,26 +56,9 @@ class Post extends BaseModel
         return $this->morphMany(config('modelmap.attachments.attachment'), 'attachable');
     }
 
-    public function bears()
-    {
-        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
-            ->where('type', config('arbitrage.sentiments.model.type.bear.value'));
-    }
-
-    public function bulls()
-    {
-        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
-            ->where('type', config('arbitrage.sentiments.model.type.bull.value'));
-    }
-
     public function comments()
     {
         return $this->hasMany(config('modelmap.posts.comments.comment'))->where('parent_id', 0);
-    }
-
-    public function sentiments()
-    {
-        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable');
     }
 
     public function tags()
