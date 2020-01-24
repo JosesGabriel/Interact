@@ -33,7 +33,11 @@ class StreamProvider extends BaseProvider
     public function handle(array $config, array $data = [])
     {
         $url = $this->generateUrlFromConfig($config, $data);
-        $response = $this->requestWithClientCreds($data)->request($url, $config['method']);
+        $this->request_client->addHeader('content-type', 'application/json');
+        $this->request_client->setOptions([
+            \GuzzleHttp\RequestOptions::JSON => $data,
+        ]);
+        $response = $this->request($url, $config['method']);
 
         return $this->absorbOwnApiResponse($response);
 
