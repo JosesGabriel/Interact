@@ -38,7 +38,9 @@ class NewPostNotification implements ShouldQueue
      */
     public function handle(UserPostedEvent $event)
     {
-        $this->sendWebNotification::dispatch([], 'social.post');
+        $this->sendWebNotification::dispatch([
+            'message' => 'There is a new post.',
+        ], 'social.post');
     }
 
     /**
