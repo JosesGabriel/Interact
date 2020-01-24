@@ -3,6 +3,7 @@
 namespace App\Services\Followers;
 
 use App\Data\Repositories\Followers\FollowerRepository;
+use App\Events\Followers\UserFollowedEvent;
 use App\Services\BaseService;
 
 /**
@@ -53,6 +54,14 @@ class FollowService extends BaseService
         $data['user_id'] = $data['follow_id'];
 
         $response = $this->follower_repo->create($data);
+
+        if ($response->isError()) {
+            return $response;
+        }
+
+        $follower = $response->getDataByKey('follow');
+
+        event(new UserFollowedEvent($follower));
 
         return $response;
     }

@@ -4,6 +4,7 @@
 namespace App\Services\Posts\Comments;
 
 use App\Data\Repositories\Posts\Comments\CommentRepository;
+use App\Events\Posts\Comments\UserCommentedEvent;
 use App\Services\BaseService;
 
 /**
@@ -55,6 +56,14 @@ class CreateService extends BaseService
         //endregion Data validation
 
         $response = $this->comment_repo->create($data);
+
+        if ($response->isError()) {
+            return $response;
+        }
+
+        $comment = $response->getDataByKey('comment');
+
+        event(new UserCommentedEvent($comment));
 
         return $response;
     }

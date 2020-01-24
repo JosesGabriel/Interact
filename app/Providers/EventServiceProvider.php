@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,8 +12,22 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        \App\Events\Followers\UserFollowedEvent::class => [
+            \App\Listeners\Followers\NewFollowerNotification::class,
+        ],
+        \App\Events\Posts\UserPostedEvent::class => [
+            \App\Listeners\Posts\NewPostNotification::class,
+            \App\Listeners\Posts\MentionNotification::class,
+        ],
+        \App\Events\Posts\Comments\UserCommentedEvent::class => [
+            \App\Listeners\Posts\Comments\NewCommentNotification::class,
+            \App\Listeners\Posts\Comments\ParentAuthorNotification::class,
+        ],
+        \App\Events\Sentiments\UserSentimentedEvent::class => [
+            \App\Listeners\Sentiments\Posts\NewSentimentNotification::class,
+            \App\Listeners\Sentiments\Posts\AuthorSentimentNotification::class,
+            \App\Listeners\Sentiments\Comments\NewSentimentNotification::class,
+            \App\Listeners\Sentiments\Comments\AuthorSentimentNotification::class,
         ],
     ];
 

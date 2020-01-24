@@ -7,4 +7,14 @@ return [
             'value' => 'post',
         ],
     ],
+    'tag_type' => [
+        'stock' => [
+            'label' => 'stock',
+            'value' => 'stock',
+        ],
+        'user' => [
+            'label' => 'user',
+            'value' => 'user',
+        ],
+    ]
 ];
