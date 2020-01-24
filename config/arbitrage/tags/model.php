@@ -2,6 +2,10 @@
 
 return [
     'taggable_type' => [
+        'comment' => [
+            'label' => 'comment',
+            'value' => 'comment',
+        ],
         'post' => [
             'label' => 'post',
             'value' => 'post',

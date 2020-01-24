@@ -5,6 +5,7 @@ namespace App\Data\Models\Posts;
 
 use App\Data\Models\BaseModel;
 use App\Data\Models\Sentiments\HasSentiments;
+use App\Data\Models\Tags\HasTags;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Snowflake\HasSnowflakePrimary;
 
@@ -17,6 +18,7 @@ class Post extends BaseModel
 {
     use HasSentiments;
     use HasSnowflakePrimary;
+    use HasTags;
     use SoftDeletes;
 
     //region Configs
@@ -59,21 +61,6 @@ class Post extends BaseModel
     public function comments()
     {
         return $this->hasMany(config('modelmap.posts.comments.comment'))->where('parent_id', 0);
-    }
-
-    public function tags()
-    {
-        return $this->morphMany(config('arbitrage.models_map.tags.tag'), 'taggable');
-    }
-
-    public function taggedStocks()
-    {
-        return $this->tags()->where('tag_type', config('arbitrage.tags.model.tag_type.stock.value'));
-    }
-
-    public function taggedUsers()
-    {
-        return $this->tags()->where('tag_type', config('arbitrage.tags.model.tag_type.user.value'));
     }
     //endregion Relations
 }
