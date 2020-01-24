@@ -7,6 +7,11 @@ use App\Jobs\SendWebNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
+/**
+ * Class NewCommentNotification
+ *
+ * @package App\Listeners\Posts\Comments
+ */
 class NewCommentNotification implements ShouldQueue
 {
     use InteractsWithQueue;
