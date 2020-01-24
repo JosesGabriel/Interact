@@ -30,6 +30,11 @@ class UserSentimentedEvent
     public $sentimentable_data;
 
     /**
+     * @var array
+     */
+    public $user_data;
+
+    /**
      * Create a new event instance.
      *
      * @param Sentiment $sentiment
@@ -42,6 +47,9 @@ class UserSentimentedEvent
             'id' => $this->sentimentable->id,
             'bears' => $this->sentimentable->bears->count(),
             'bulls' => $this->sentimentable->bulls->count(),
+        ];
+        $this->user_data = [
+            'id' => $sentiment->user_id,
         ];
     }
 }
