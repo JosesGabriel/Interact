@@ -63,6 +63,24 @@ class CreateService extends BaseService
 
         $comment = $response->getDataByKey('comment');
 
+        //region Create Tags
+        if (isset($data['tags']) &&
+            is_array($data['tags'])) {
+
+            $taggable_type = config('arbitrage.tags.model.taggable_type.comment.value');
+
+            $tags = collect($data['tags'])->map(function ($tag) use ($comment, $taggable_type) {
+                $tag['taggable_id'] = $comment->id;
+                $tag['taggable_type'] = $taggable_type;
+                return $tag;
+            });
+
+            $comment->tags()->createMany($tags);
+
+            $response->addData('tags', $tags);
+        }
+        //endregion Create Tags
+
         event(new UserCommentedEvent($comment));
 
         return $response;
