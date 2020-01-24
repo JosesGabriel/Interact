@@ -130,6 +130,8 @@ class PostRepository extends BaseRepository
                 'comments' => function ($query) {
                     $query->with(['comments'])->withCount(['comments']);
                 },
+                'taggedStocks',
+                'taggedUsers',
             ])
             ->withCount([
                 'attachments',
@@ -176,6 +178,8 @@ class PostRepository extends BaseRepository
                 'comments' => function ($query) {
                     $query->take(config('arbitrage.posts.config.relations.comments.max'));
                 },
+                'taggedStocks',
+                'taggedUsers',
             ])
             ->withCount([
                 'attachments',
