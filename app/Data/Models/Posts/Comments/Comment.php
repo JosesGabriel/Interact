@@ -61,6 +61,11 @@ class Comment extends BaseModel
             ->where('type', config('arbitrage.sentiments.model.type.bull.value'));
     }
 
+    public function parentComment()
+    {
+        return $this->belongsTo(config('arbitrage.models_map.posts.comments.comment'), 'id', 'parent_id');
+    }
+
     public function post()
     {
         return $this->belongsTo(config('modelmap.posts.post'));
