@@ -14,6 +14,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         \App\Events\Posts\UserPostedEvent::class => [
             \App\Listeners\Posts\NewPostNotification::class,
+            \App\Listeners\Posts\MentionNotification::class,
         ],
     ];
 
