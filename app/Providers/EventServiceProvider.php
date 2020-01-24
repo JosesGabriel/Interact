@@ -12,6 +12,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        \App\Events\Followers\UserFollowedEvent::class => [
+            \App\Listeners\Followers\NewFollowerNotification::class,
+        ],
         \App\Events\Posts\UserPostedEvent::class => [
             \App\Listeners\Posts\NewPostNotification::class,
             \App\Listeners\Posts\MentionNotification::class,
