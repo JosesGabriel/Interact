@@ -20,6 +20,16 @@ class UserSentimentedEvent
     public $sentiment;
 
     /**
+     * @var mixed
+     */
+    public $sentimentable;
+
+    /**
+     * @var array
+     */
+    public $sentimentable_data;
+
+    /**
      * Create a new event instance.
      *
      * @param Sentiment $sentiment
@@ -27,5 +37,11 @@ class UserSentimentedEvent
     public function __construct(Sentiment $sentiment)
     {
         $this->sentiment = $sentiment;
+        $this->sentimentable = $sentiment->sentimentable;
+        $this->sentimentable_data = [
+            'id' => $this->sentimentable->id,
+            'bears' => $this->sentimentable->bears->count(),
+            'bulls' => $this->sentimentable->bulls->count(),
+        ];
     }
 }
