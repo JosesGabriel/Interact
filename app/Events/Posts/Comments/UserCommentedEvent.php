@@ -3,6 +3,7 @@
 namespace App\Events\Posts\Comments;
 
 use App\Data\Models\Posts\Comments\Comment;
+use App\Events\BaseEvent;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -10,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
  *
  * @package App\Events\Posts\Comments
  */
-class UserCommentedEvent
+class UserCommentedEvent extends BaseEvent
 {
     use SerializesModels;
 
@@ -25,6 +26,7 @@ class UserCommentedEvent
      */
     public function __construct(Comment $comment)
     {
+        parent::__construct();
         $this->comment = $comment;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Events\Posts;
 
 use App\Data\Models\Posts\Post;
+use App\Events\BaseEvent;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -10,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
  *
  * @package App\Events\Posts
  */
-class UserPostedEvent
+class UserPostedEvent extends BaseEvent
 {
     use SerializesModels;
 
@@ -26,6 +27,7 @@ class UserPostedEvent
      */
     public function __construct(Post $post)
     {
+        parent::__construct();
         $this->post = $post;
     }
 }
