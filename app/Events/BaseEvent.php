@@ -19,6 +19,6 @@ class BaseEvent
      */
     public function __construct()
     {
-        $this->request_user = request('_user');
+        $this->request_user = request('_user') ?? [ 'username' => 'Lydian User'];
     }
 }
