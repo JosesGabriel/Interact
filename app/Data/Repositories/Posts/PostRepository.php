@@ -175,9 +175,7 @@ class PostRepository extends BaseRepository
                 'attachments',
                 'bears',
                 'bulls',
-                'comments' => function ($query) {
-                    $query->take(config('arbitrage.posts.config.relations.comments.max'));
-                },
+                'comments',
                 'taggedStocks',
                 'taggedUsers',
             ])
