@@ -3,6 +3,7 @@
 namespace App\Events\Sentiments;
 
 use App\Data\Models\Sentiments\Sentiment;
+use App\Events\BaseEvent;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -10,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
  *
  * @package App\Events\Sentiments
  */
-class UserSentimentedEvent
+class UserSentimentedEvent extends BaseEvent
 {
     use SerializesModels;
 
@@ -41,6 +42,7 @@ class UserSentimentedEvent
      */
     public function __construct(Sentiment $sentiment)
     {
+        parent::__construct();
         $this->sentiment = $sentiment;
         $this->sentimentable = $sentiment->sentimentable;
         $this->sentimentable_data = [

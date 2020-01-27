@@ -40,9 +40,10 @@ class NewFollowerNotification implements ShouldQueue
     public function handle(UserFollowedEvent $event)
     {
         $follower = $event->follower;
+        $user = $event->request_user;
 
         $this->sendWebNotification::dispatch([
-            'message' => 'A user followed you.',
+            'message' => "{$user['username']} followed you.",
             'data' => [
                 'follower' => [
                     'id' => $follower->follower_id,

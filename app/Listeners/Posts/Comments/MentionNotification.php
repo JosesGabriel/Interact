@@ -41,11 +41,12 @@ class MentionNotification implements ShouldQueue
     {
         $comment = $event->comment;
         $tagged_users = $comment->taggedUsers;
+        $user = $event->request_user;
 
         if ($tagged_users) {
             foreach ($tagged_users as $user) {
                 $this->sendWebNotification::dispatch([
-                    'message' => 'A user has mentioned you.',
+                    'message' => "{$user['username']} user has mentioned you.",
                     'data' => [
                         'comment' => [
                             'id' => $comment->id,

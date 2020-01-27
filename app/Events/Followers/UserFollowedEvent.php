@@ -3,6 +3,7 @@
 namespace App\Events\Followers;
 
 use App\Data\Models\Followers\Follower;
+use App\Events\BaseEvent;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -10,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
  *
  * @package App\Events\Followers
  */
-class UserFollowedEvent
+class UserFollowedEvent extends BaseEvent
 {
     use SerializesModels;
 
@@ -26,6 +27,7 @@ class UserFollowedEvent
      */
     public function __construct(Follower $follower)
     {
+        parent::__construct();
         $this->follower = $follower;
     }
 }
