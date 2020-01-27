@@ -39,19 +39,20 @@ class ParentAuthorNotification implements ShouldQueue
     public function handle(UserCommentedEvent $event)
     {
         $comment = $event->comment;
+        $user = $event->request_user;
 
         if ($comment->parent_id) {
             $event = 'comment.comment';
-            $parent_type = 'comment';
+            $message = "{$user['username']} replied to your comment.";
             $user_id = $comment->parentComment->user_id;
         } else {
             $event = 'post.comment';
-            $parent_type = 'post';
+            $message = "{$user['username']} commented on your post.";
             $user_id = $comment->post->user_id;
         }
 
         $this->sendWebNotification::dispatch([
-            'message' => "There is a new comment on your $parent_type.",
+            'message' => $message,
             'data' => [
                 'post' => [
                     'id' => $comment->post_id,
