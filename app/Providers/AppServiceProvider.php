@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Jobs\SendWebNotification;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
             'tag' => config('arbitrage.models_map.tags.tag'),
         ]);
 
-        $this->app->bindMethod(SendWebNotification::class.'@handle', function ($job, $app) {
+        $this->app->bindMethod(\App\Jobs\SendWebNotification::class.'@handle', function ($job, $app) {
             return $job->handle($app->make(\App\Data\Providers\Arbitrage\Stream\StreamProvider::class));
         });
 
