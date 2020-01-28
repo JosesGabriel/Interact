@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Data\Providers\BaseProvider;
+use App\Jobs\CreateUserWebNotification;
 
 /**
  * Trait HasUserWebNotification
@@ -21,12 +21,6 @@ trait HasUserWebNotification
         'type' => 'social',
         '_notification' => [],
     ];
-
-    /**
-     * @var BaseProvider
-     */
-    protected $webNotificationProvider;
-
     //region Getters
 
     /**
@@ -47,25 +41,10 @@ trait HasUserWebNotification
         $this->webNotification['_notification'] = compact('data', 'event', 'channel');
         return $this;
     }
-
-    /**
-     * @param BaseProvider $provider
-     * @return $this
-     */
-    public function setWebNotificationProvider(BaseProvider $provider)
-    {
-        $this->webNotificationProvider = $provider;
-        return $this;
-    }
     //endregion Setters
 
     public function sendWebNotification()
     {
-        if ($this->webNotificationProvider) {
-            $this->webNotificationProvider->handle([
-                'uri' => '/api/notifications/activities',
-                'method' => 'POST',
-            ], $this->webNotification);
-        }
+        CreateUserWebNotification::dispatch($this->webNotification);
     }
 }
