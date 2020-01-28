@@ -3,7 +3,7 @@
 namespace App\Listeners\Posts\Comments;
 
 use App\Events\Posts\Comments\UserCommentedEvent;
-use App\Jobs\SendWebNotification;
+use App\Listeners\HasUserWebNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -14,21 +14,8 @@ use Illuminate\Queue\InteractsWithQueue;
  */
 class ParentAuthorNotification implements ShouldQueue
 {
+    use HasUserWebNotification;
     use InteractsWithQueue;
-    /**
-     * @var SendWebNotification
-     */
-    private $sendWebNotification;
-
-    /**
-     * Create the event listener.
-     *
-     * @param SendWebNotification $sendWebNotification
-     */
-    public function __construct(SendWebNotification $sendWebNotification)
-    {
-        $this->sendWebNotification = $sendWebNotification;
-    }
 
     /**
      * Handle the event.
@@ -51,13 +38,14 @@ class ParentAuthorNotification implements ShouldQueue
             $user_id = $comment->post->user_id;
         }
 
-        $this->sendWebNotification::dispatch([
+        $this->setWebNotification([
             'message' => $message,
             'data' => [
                 'post' => [
                     'id' => $comment->post_id,
                 ],
+                'user' => $user,
             ],
-        ], "social.$event", $user_id);
+        ], "social.$event", $user_id)->sendWebNotification();
     }
 }

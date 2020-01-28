@@ -3,7 +3,7 @@
 namespace App\Listeners\Followers;
 
 use App\Events\Followers\UserFollowedEvent;
-use App\Jobs\SendWebNotification;
+use App\Listeners\HasUserWebNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -14,22 +14,8 @@ use Illuminate\Queue\InteractsWithQueue;
  */
 class NewFollowerNotification implements ShouldQueue
 {
+    use HasUserWebNotification;
     use InteractsWithQueue;
-
-    /**
-     * @var SendWebNotification
-     */
-    private $sendWebNotification;
-
-    /**
-     * Create the event listener.
-     *
-     * @param SendWebNotification $sendWebNotification
-     */
-    public function __construct(SendWebNotification $sendWebNotification)
-    {
-        $this->sendWebNotification = $sendWebNotification;
-    }
 
     /**
      * Handle the event.
@@ -41,14 +27,15 @@ class NewFollowerNotification implements ShouldQueue
     {
         $follower = $event->follower;
         $user = $event->request_user;
-
-        $this->sendWebNotification::dispatch([
+        $data = [
             'message' => "{$user['username']} followed you.",
             'data' => [
                 'follower' => [
                     'id' => $follower->follower_id,
                 ],
+                'user' => $user,
             ],
-        ], 'social.user.follow', $follower->user_id);
+        ];
+        $this->setWebNotification($data, 'social.user.follow', $follower->user_id )->sendWebNotification();
     }
 }
