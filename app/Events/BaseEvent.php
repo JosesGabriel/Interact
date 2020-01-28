@@ -19,9 +19,9 @@ class BaseEvent
      */
     public function __construct()
     {
-        $this->request_user = request('_user') ?? [
-                'username' => 'Lydian User',
-                'profile_image' => '',
-            ];
+        $this->request_user = array_merge([
+            'username' => 'Lydian User',
+            'profile_image' => '',
+        ], (request('_user') ?? []));
     }
 }
