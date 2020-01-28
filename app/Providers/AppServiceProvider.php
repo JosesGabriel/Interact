@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Data\Providers\Arbitrage\Stream\StreamProvider;
 use App\Jobs\SendWebNotification;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
@@ -33,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         $this->app->bindMethod(SendWebNotification::class.'@handle', function ($job, $app) {
-            return $job->handle($app->make(StreamProvider::class));
+            return $job->handle($app->make(\App\Data\Providers\Arbitrage\Gateway\GatewayProvider::class));
         });
     }
 }
