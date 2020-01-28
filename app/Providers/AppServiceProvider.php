@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         $this->app->bindMethod(SendWebNotification::class.'@handle', function ($job, $app) {
-            return $job->handle($app->make(\App\Data\Providers\Arbitrage\Gateway\GatewayProvider::class));
+            return $job->handle($app->make(\App\Data\Providers\Arbitrage\Stream\StreamProvider::class));
         });
 
         $this->app->bindMethod(\App\Jobs\CreateUserWebNotification::class.'@handle', function ($job, $app) {
