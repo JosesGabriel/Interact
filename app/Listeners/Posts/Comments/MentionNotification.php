@@ -3,7 +3,7 @@
 namespace App\Listeners\Posts\Comments;
 
 use App\Events\Posts\Comments\UserCommentedEvent;
-use App\Jobs\SendWebNotification;
+use App\Listeners\HasUserWebNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -14,22 +14,8 @@ use Illuminate\Queue\InteractsWithQueue;
  */
 class MentionNotification implements ShouldQueue
 {
+    use HasUserWebNotification;
     use InteractsWithQueue;
-
-    /**
-     * @var SendWebNotification
-     */
-    private $sendWebNotification;
-
-    /**
-     * Create the event listener.
-     *
-     * @param SendWebNotification $sendWebNotification
-     */
-    public function __construct(SendWebNotification $sendWebNotification)
-    {
-        $this->sendWebNotification = $sendWebNotification;
-    }
 
     /**
      * Handle the event.
@@ -44,18 +30,20 @@ class MentionNotification implements ShouldQueue
         $user = $event->request_user;
 
         if ($tagged_users) {
-            foreach ($tagged_users as $user) {
-                $this->sendWebNotification::dispatch([
-                    'message' => "{$user['username']} user has mentioned you.",
-                    'data' => [
-                        'comment' => [
-                            'id' => $comment->id,
-                        ],
-                        'post' => [
-                            'id' => $comment->post->id,
-                        ],
+            $data = [
+                'message' => "{$user['username']} has mentioned you.",
+                'data' => [
+                    'comment' => [
+                        'id' => $comment->id,
                     ],
-                ], 'social.comment.tag:user', $user->tag_id);
+                    'post' => [
+                        'id' => $comment->post->id,
+                    ],
+                    'user' => $user,
+                ],
+            ];
+            foreach ($tagged_users as $tagged_user) {
+                $this->setWebNotification($data, 'social.comment.tag:user', $tagged_user->tag_id)->sendWebNotification();
             }
         }
     }
