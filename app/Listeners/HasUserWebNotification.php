@@ -36,9 +36,13 @@ trait HasUserWebNotification
     public function setWebNotification($data = [], $event = '', $channel = '')
     {
         $this->webNotification['message'] = $data['message'] ?? '';
-        $this->webNotification['meta'] = $data;
+        $this->webNotification['meta'] = $data['data'] ?? [];
         $this->webNotification['recipient_id'] = $channel;
-        $this->webNotification['_notification'] = compact('data', 'event', 'channel');
+        $this->webNotification['_notification'] = [
+            'data' => $data['data'] ?? [],
+            'event' => $event,
+            'channel' => $channel,
+        ];
         return $this;
     }
     //endregion Setters
