@@ -19,7 +19,7 @@ trait HasUserWebNotification
         'meta' => [],
         'recipient_id' => '',
         'type' => 'social',
-        '_notification' => [],
+        '_web_notification' => [],
     ];
     //region Getters
 
@@ -38,7 +38,7 @@ trait HasUserWebNotification
         $this->webNotification['message'] = $data['message'] ?? '';
         $this->webNotification['meta'] = $data['data'] ?? [];
         $this->webNotification['recipient_id'] = $channel;
-        $this->webNotification['_notification'] = [
+        $this->webNotification['_web_notification'] = [
             'data' => $data['data'] ?? [],
             'event' => $event,
             'channel' => $channel,
