@@ -21,7 +21,7 @@ class DataProvider extends BaseProvider
         parent::__construct();
 
         // ask data from carl
-        // $this->base_url = env('JOURNAL_API_URL');
+        $this->base_url = env('DATA_API_URL');
         // $this->client_id = env('JOURNAL_API_CLIENT_ID');
         // $this->client_secret = env('JOURNAL_API_CLIENT_SECRET');
 
@@ -36,11 +36,8 @@ class DataProvider extends BaseProvider
      */
     public function handle(array $config, array $data = [])
     {
-        $headers = [
-            'Authorization' => "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfbmFtZSI6IjRSQjErUjQ5MyJ9.SZzdF4-L3TwqaGxfb8sR-xeBWWHmGyM4SCuBc1ffWUs"
-        ];
         $url = $this->generateUrlFromConfig($config, $data);
-        $response = $this->requestWithBearerToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfbmFtZSI6IjRSQjErUjQ5MyJ9.SZzdF4-L3TwqaGxfb8sR-xeBWWHmGyM4SCuBc1ffWUs")->requestWithClientCreds($data)->request($url, $config['method']);
+        $response = $this->requestWithBearerToken(request()->bearerToken())->requestWithClientCreds($data)->request($url, $config['method']);
 
         return $this->absorbOwnApiResponse($response);
     }

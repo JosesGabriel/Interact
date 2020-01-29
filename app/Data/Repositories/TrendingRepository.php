@@ -4,6 +4,7 @@
 namespace App\Data\Repositories;
 
 use App\Data\Providers\DataProvider;
+use App\Data\Models\Followers\Follower;
 use App\Data\Models\Sentiments\Sentiment;
 use App\Data\Models\Sentiments\ChartSentiment;
 use App\Data\Models\Posts\Post;
@@ -25,19 +26,22 @@ class TrendingRepository extends BaseRepository
     private $chart_sentiment_model;
     private $post_model;
     private $comments_model;
+    private $follower;
 
     public function __construct(
         Sentiment $sentiment,
         ChartSentiment $chartSentiment,
         Post $postModel,
         Comment $commentModel,
-        DataProvider $dataProvider
+        DataProvider $dataProvider,
+        Follower $socialFollower
     ){
         $this->sentiment_model = $sentiment;
         $this->chart_sentiment_model = $chartSentiment;
         $this->post_model = $postModel;
         $this->comments_model = $commentModel;
         $this->data_provider = $dataProvider;
+        $this->follower = $socialFollower;
     }
 
     /**
@@ -130,12 +134,13 @@ class TrendingRepository extends BaseRepository
 
 
         $response = $this->data_provider->handle([
-            'uri' => "https://data-api.arbitrage.ph/api/v2/stocks/history/latest?exchange=PSE&type=stock",
-            "method" => "GET"
+            'uri' => "/v2/stocks/history/latest?exchange=PSE&type=stock",
+            "method" => "POST"
         ], [])->getResponse();
 
         $stock_information = [];
         $counter = 0;
+
         foreach ($final_stock_list as $key => $value) {
             $trendinfo = [];
             $array_key = array_search($key, array_column($response['data'], 'symbol'));
@@ -196,8 +201,20 @@ class TrendingRepository extends BaseRepository
         foreach ($user_list as $key => $value) { $user_counter[$value]++; }
         arsort($user_counter);
 
+        // removed current user 
+        if(isset($data['user_id'])){
+            unset($user_counter[$data['user_id']]);
+
+            foreach ($user_counter as $key => $value) {
+                $post_stocks = $this->follower->where([['user_id', "=", $data['user_id']],['follower_id', "=", $key]])->get()->toArray();
+                if(!empty($post_stocks)){
+                    unset($user_counter[$key]);
+                }
+            }
+        }
+
         $final_list = array_slice($user_counter, 0, $limit);
-        
+
         return $this->setResponse([
             'status' => 200,
             'message' => 'Successfully fetched Suggested Users.',
