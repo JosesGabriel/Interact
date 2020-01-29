@@ -41,9 +41,6 @@ class MentionNotification implements ShouldQueue
                 ],
             ];
             foreach ($tagged_users as $tagged_user) {
-                if ($tagged_user->tag_id == $user['uuid']) {
-                    continue;
-                }
                 $this->setWebNotification($data, 'social.post.tag:user', $tagged_user->tag_id)->sendWebNotification();
             }
         }
