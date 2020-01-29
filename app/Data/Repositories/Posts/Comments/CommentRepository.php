@@ -131,7 +131,6 @@ class CommentRepository extends BaseRepository
                 'taggedUsers',
             ])
             ->withCount([
-                'attachments',
                 'bears',
                 'bulls',
                 'comments',
@@ -173,7 +172,6 @@ class CommentRepository extends BaseRepository
                 'taggedUsers',
             ])
             ->withCount([
-                'attachments',
                 'bears',
                 'bulls',
                 'comments',
