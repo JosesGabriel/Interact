@@ -130,6 +130,9 @@ class PostRepository extends BaseRepository
                 'comments' => function ($query) {
                     $query->with(['comments'])->withCount(['comments']);
                 },
+                'mySentiment' => function ($query) {
+                    $query->where('user_id', request('user_id'));
+                },
                 'taggedStocks',
                 'taggedUsers',
             ])
@@ -176,6 +179,9 @@ class PostRepository extends BaseRepository
                 'bears',
                 'bulls',
                 'comments',
+                'mySentiment' => function ($query) {
+                    $query->where('user_id', request('user_id'));
+                },
                 'taggedStocks',
                 'taggedUsers',
             ])
