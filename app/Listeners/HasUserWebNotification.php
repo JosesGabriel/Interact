@@ -22,6 +22,24 @@ trait HasUserWebNotification
         '_web_notification' => [],
     ];
     //region Getters
+    /**
+     * The id of the user that caused this action/notification
+     * @return mixed|string
+     */
+    public function getExecutorId()
+    {
+        $executor =  $this->webNotification['meta']['user'] ?? ['uuid' => ''];
+        return $executor['uuid'] ?? '';
+    }
+
+    /**
+     * The id of the user that will receive the notification
+     * @return mixed
+     */
+    public function getRecipientId()
+    {
+        return $this->webNotification['recipient_id'];
+    }
 
     /**
      * @return array
@@ -33,6 +51,12 @@ trait HasUserWebNotification
     //endregion Getters
 
     //region Setters
+    /**
+     * @param array $data
+     * @param string $event
+     * @param string $channel
+     * @return $this
+     */
     public function setWebNotification($data = [], $event = '', $channel = '')
     {
         $this->webNotification['message'] = $data['message'] ?? '';
@@ -49,6 +73,8 @@ trait HasUserWebNotification
 
     public function sendWebNotification()
     {
-        CreateUserWebNotification::dispatch($this->webNotification);
+        if ($this->getRecipientId() != $this->getExecutorId()) {
+            CreateUserWebNotification::dispatch($this->webNotification);
+        }
     }
 }
