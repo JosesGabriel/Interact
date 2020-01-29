@@ -119,7 +119,24 @@ class CommentRepository extends BaseRepository
     public function fetch($id)
     {
         //region Existence check
-        $comment = $this->comment_model->find($id);
+        $comment = $this->comment_model
+            ->with([
+                'bears',
+                'bulls',
+                'comments',
+                'mySentiment' => function ($query) {
+                    $query->where('user_id', request('user_id'));
+                },
+                'taggedStocks',
+                'taggedUsers',
+            ])
+            ->withCount([
+                'attachments',
+                'bears',
+                'bulls',
+                'comments',
+            ])
+            ->find($id);
 
         if (!$comment) {
             return $this->setResponse([
@@ -144,7 +161,23 @@ class CommentRepository extends BaseRepository
      */
     public function search(array $data)
     {
-        $model = Comment::query();
+        $model = Comment::query()
+            ->with([
+                'bears',
+                'bulls',
+                'comments',
+                'mySentiment' => function ($query) {
+                    $query->where('user_id', request('user_id'));
+                },
+                'taggedStocks',
+                'taggedUsers',
+            ])
+            ->withCount([
+                'attachments',
+                'bears',
+                'bulls',
+                'comments',
+            ]);
 
         //region Build query
         if (isset($data['where'])) {
