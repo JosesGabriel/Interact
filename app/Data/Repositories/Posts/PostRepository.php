@@ -128,7 +128,22 @@ class PostRepository extends BaseRepository
                 'bears',
                 'bulls',
                 'comments' => function ($query) {
-                    $query->with(['comments'])->withCount(['comments']);
+                    $query
+                        ->with([
+                            'bears',
+                            'bulls',
+                            'comments',
+                            'mySentiment' => function ($query) {
+                                $query->where('user_id', request('user_id'));
+                            },
+                            'taggedStocks',
+                            'taggedUsers',
+                        ])
+                        ->withCount([
+                            'bears',
+                            'bulls',
+                            'comments',
+                        ]);
                 },
                 'mySentiment' => function ($query) {
                     $query->where('user_id', request('user_id'));
@@ -178,7 +193,24 @@ class PostRepository extends BaseRepository
                 'attachments',
                 'bears',
                 'bulls',
-                'comments',
+                'comments' => function ($query) {
+                    $query
+                        ->with([
+                            'bears',
+                            'bulls',
+                            'comments',
+                            'mySentiment' => function ($query) {
+                                $query->where('user_id', request('user_id'));
+                            },
+                            'taggedStocks',
+                            'taggedUsers',
+                        ])
+                        ->withCount([
+                            'bears',
+                            'bulls',
+                            'comments',
+                        ]);
+                },
                 'mySentiment' => function ($query) {
                     $query->where('user_id', request('user_id'));
                 },
