@@ -4,6 +4,7 @@
 namespace App\Services\Sentiments;
 
 use App\Data\Repositories\Sentiments\SentimentRepository;
+use App\Events\Sentiments\UserSentimentedEvent;
 use App\Services\BaseService;
 
 /**
@@ -107,6 +108,14 @@ class CreateOrUpdateService extends BaseService
             $response = $this->sentiment_repo->create($data);
         }
         //endregion Create or update
+
+        if ($response->isError()) {
+            return $response;
+        }
+
+        $sentiment = $response->getDataByKey('sentiment');
+
+        event(new UserSentimentedEvent($sentiment));
 
         return $response;
     }

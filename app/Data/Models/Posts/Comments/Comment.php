@@ -4,6 +4,8 @@
 namespace App\Data\Models\Posts\Comments;
 
 use App\Data\Models\BaseModel;
+use App\Data\Models\Sentiments\HasSentiments;
+use App\Data\Models\Tags\HasTags;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Snowflake\HasSnowflakePrimary;
 
@@ -14,7 +16,9 @@ use Snowflake\HasSnowflakePrimary;
  */
 class Comment extends BaseModel
 {
+    use HasSentiments;
     use HasSnowflakePrimary;
+    use HasTags;
     use SoftDeletes;
 
     //region Configs
@@ -49,26 +53,14 @@ class Comment extends BaseModel
     //endregion Configs
 
     //region Relations
-    public function bears()
+    public function parentComment()
     {
-        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
-            ->where('type', config('arbitrage.sentiments.model.type.bear.value'));
-    }
-
-    public function bulls()
-    {
-        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable')
-            ->where('type', config('arbitrage.sentiments.model.type.bull.value'));
+        return $this->belongsTo(config('arbitrage.models_map.posts.comments.comment'), 'id', 'parent_id');
     }
 
     public function post()
     {
         return $this->belongsTo(config('modelmap.posts.post'));
-    }
-
-    public function sentiments()
-    {
-        return $this->morphMany(config('arbitrage.models_map.sentiments.sentiment'), 'sentimentable');
     }
 
     public function comments()

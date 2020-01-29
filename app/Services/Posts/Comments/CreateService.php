@@ -4,6 +4,7 @@
 namespace App\Services\Posts\Comments;
 
 use App\Data\Repositories\Posts\Comments\CommentRepository;
+use App\Events\Posts\Comments\UserCommentedEvent;
 use App\Services\BaseService;
 
 /**
@@ -55,6 +56,32 @@ class CreateService extends BaseService
         //endregion Data validation
 
         $response = $this->comment_repo->create($data);
+
+        if ($response->isError()) {
+            return $response;
+        }
+
+        $comment = $response->getDataByKey('comment');
+
+        //region Create Tags
+        if (isset($data['tags']) &&
+            is_array($data['tags'])) {
+
+            $taggable_type = config('arbitrage.tags.model.taggable_type.comment.value');
+
+            $tags = collect($data['tags'])->map(function ($tag) use ($comment, $taggable_type) {
+                $tag['taggable_id'] = $comment->id;
+                $tag['taggable_type'] = $taggable_type;
+                return $tag;
+            });
+
+            $comment->tags()->createMany($tags);
+
+            $response->addData('tags', $tags);
+        }
+        //endregion Create Tags
+
+        event(new UserCommentedEvent($comment));
 
         return $response;
     }
