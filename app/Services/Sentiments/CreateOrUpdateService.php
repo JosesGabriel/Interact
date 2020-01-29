@@ -109,6 +109,10 @@ class CreateOrUpdateService extends BaseService
         }
         //endregion Create or update
 
+        if ($response->isError()) {
+            return $response;
+        }
+
         $sentiment = $response->getDataByKey('sentiment');
 
         event(new UserSentimentedEvent($sentiment));
