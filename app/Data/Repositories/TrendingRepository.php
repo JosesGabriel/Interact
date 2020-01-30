@@ -91,7 +91,8 @@ class TrendingRepository extends BaseRepository
         $stocks = []; // list of stocks
         
         $trending_days = 182;
-        $limit = (isset($data['count']) ? $data['count'] : 5);
+        // $limit = (isset($data['count']) ? $data['count'] : 5);
+        $limit = 20;
 
         // post tags
         $post_stocks = $this->post_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
