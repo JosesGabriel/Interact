@@ -185,8 +185,8 @@ class TrendingRepository extends BaseRepository
     public function get_users($data)
     {
         $trending_days = 90;
-        // $limit = (isset($data['count']) ? $data['count'] : 5);
-        $limit = 20;
+        $limit = (isset($data['count']) ? $data['count'] : 5);
+        // $limit = 10;
         $post_stocks = $this->post_model->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
 
         if(empty($post_stocks)){
