@@ -72,6 +72,7 @@ class CreateService extends BaseService
             $tags = collect($data['tags'])->map(function ($tag) use ($comment, $taggable_type) {
                 $tag['taggable_id'] = $comment->id;
                 $tag['taggable_type'] = $taggable_type;
+                $tag['tag_meta'] = $tag['tag_meta'] ?? [];
                 return $tag;
             });
 
