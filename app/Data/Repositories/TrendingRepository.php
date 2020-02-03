@@ -91,8 +91,8 @@ class TrendingRepository extends BaseRepository
         $stocks = []; // list of stocks
         
         $trending_days = 182;
-        // $limit = (isset($data['count']) ? $data['count'] : 5);
-        $limit = 20;
+        $limit = (isset($data['count']) ? $data['count'] : 5);
+        // $limit = 20;
 
         // post tags
         $post_stocks = $this->post_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
@@ -106,6 +106,8 @@ class TrendingRepository extends BaseRepository
             }
         }
 
+        
+
         // comment and reply tags
         $comment_stocks = $this->comments_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
         foreach ($comment_stocks as $key => $value) {
@@ -117,6 +119,7 @@ class TrendingRepository extends BaseRepository
                 }
             }
         }
+        
 
         // filter the stocks 
         $final_stock_list = [];
@@ -132,7 +135,7 @@ class TrendingRepository extends BaseRepository
         }
 
         array_multisort($final_stock_list, SORT_DESC); // get list of trending stocks
-
+        
 
         $response = $this->data_provider->handle([
             'uri' => "/v2/stocks/history/latest?exchange=PSE&type=stock",
@@ -144,8 +147,8 @@ class TrendingRepository extends BaseRepository
 
         foreach ($final_stock_list as $key => $value) {
             $trendinfo = [];
+            
             $array_key = array_search($key, array_column($response['data'], 'symbol'));
-
             if(!empty($array_key)){
                 $data_info = $response['data'][$array_key];
                 
@@ -182,8 +185,8 @@ class TrendingRepository extends BaseRepository
     public function get_users($data)
     {
         $trending_days = 90;
-        // $limit = (isset($data['count']) ? $data['count'] : 5);
-        $limit = 20;
+        $limit = (isset($data['count']) ? $data['count'] : 5);
+        // $limit = 10;
         $post_stocks = $this->post_model->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
 
         if(empty($post_stocks)){
