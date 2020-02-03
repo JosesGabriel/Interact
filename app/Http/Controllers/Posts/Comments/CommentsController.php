@@ -10,6 +10,7 @@ use App\Services\Posts\Comments\DeleteService;
 use App\Services\Posts\Comments\RemoveAttachmentService;
 use App\Services\Posts\Comments\SearchService;
 use App\Services\Posts\Comments\UpdateService;
+use App\Services\Sentiments\CreateOrUpdateService;
 use Illuminate\Http\Request;
 
 /**
@@ -133,6 +134,60 @@ class CommentsController extends BaseController
         $data['post_id'] = $post_id;
 
         $response = $removeAttachmentService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param CreateOrUpdateService $createOrUpdateService
+     * @param $post_id
+     * @param $id
+     * @param $sentiment
+     * @return \Illuminate\Http\Response
+     */
+    public function sentimentalize(
+        Request $request,
+        CreateOrUpdateService $createOrUpdateService,
+        $post_id,
+        $id,
+        $sentiment
+    ){
+        $data = $request->all();
+
+        $data['post_id'] = $post_id;
+        $data['sentimentable_id'] = $id;
+        $data['sentimentable_type'] = config('arbitrage.sentiments.model.sentimentable_type.comment.value');
+        $data['type'] = $sentiment;
+
+        $response = $createOrUpdateService->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    /**
+     * @param Request $request
+     * @param \App\Services\Sentiments\DeleteService $deleteService
+     * @param $post_id
+     * @param $id
+     * @param $sentiment
+     * @return \Illuminate\Http\Response
+     */
+    public function unsentimentalize(
+        Request $request,
+        \App\Services\Sentiments\DeleteService $deleteService,
+        $post_id,
+        $id,
+        $sentiment
+    ){
+        $data = $request->all();
+
+        $data['post_id'] = $post_id;
+        $data['sentimentable_id'] = $id;
+        $data['sentimentable_type'] = config('arbitrage.sentiments.model.sentimentable_type.comment.value');
+        $data['type'] = $sentiment;
+
+        $response = $deleteService->handle($data);
 
         return $this->absorb($response)->respond();
     }

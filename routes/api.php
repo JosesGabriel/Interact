@@ -54,6 +54,13 @@ Route::group([
             Route::delete('{attachment_id}', 'CommentsController@removeAttachment');
             Route::post('/', 'CommentsController@addAttachment');
         });
+
+        Route::group([
+            'prefix' => '{id}',
+        ], function () {
+            Route::delete('un{sentiment}', 'CommentsController@unsentimentalize')->where('sentiment', 'bear|bull');
+            Route::post('{sentiment}', 'CommentsController@sentimentalize')->where('sentiment', 'bear|bull');
+        });
     });
 
     Route::group([
