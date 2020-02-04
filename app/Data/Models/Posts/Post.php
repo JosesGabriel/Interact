@@ -62,5 +62,10 @@ class Post extends BaseModel
     {
         return $this->hasMany(config('modelmap.posts.comments.comment'))->where('parent_id', 0);
     }
+
+    public function commentDescendants()
+    {
+        return $this->hasMany(config('modelmap.posts.comments.comment'));
+    }
     //endregion Relations
 }
