@@ -55,7 +55,7 @@ class Comment extends BaseModel
     //region Relations
     public function parentComment()
     {
-        return $this->belongsTo(config('arbitrage.models_map.posts.comments.comment'), 'id', 'parent_id');
+        return $this->belongsTo(config('arbitrage.models_map.posts.comments.comment'), 'parent_id', 'id');
     }
 
     public function post()
