@@ -55,6 +55,25 @@ class CreateService extends BaseService
         }
         //endregion Data validation
 
+        //region Existence check
+        if ($data['parent_id'] != 0) {
+            $parent = $this->comment_repo->fetch($data['parent_id']);
+
+            if ($parent->isError()) {
+                return $parent;
+            }
+
+            $parent = $parent->getDataByKey('comment');
+
+            if ($parent->post_id != $data['post_id']) {
+                return $this->setResponse([
+                    'status' => 400,
+                    'message' => 'The post id is invalid.',
+                ]);
+            }
+        }
+        //endregion Existence check
+
         $response = $this->comment_repo->create($data);
 
         if ($response->isError()) {
