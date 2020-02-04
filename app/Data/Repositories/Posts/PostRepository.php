@@ -156,6 +156,7 @@ class PostRepository extends BaseRepository
                 'bears',
                 'bulls',
                 'comments',
+                'commentDescendants',
             ])
             ->find($id);
 
@@ -222,6 +223,7 @@ class PostRepository extends BaseRepository
                 'bears',
                 'bulls',
                 'comments',
+                'commentDescendants',
             ]);
 
         //region Data filter
