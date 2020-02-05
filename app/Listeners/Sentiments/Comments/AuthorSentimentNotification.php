@@ -31,7 +31,7 @@ class AuthorSentimentNotification implements ShouldQueue
 
         if ($sentiment->sentimentable_type == config('arbitrage.sentiments.model.sentimentable_type.comment.value')) {
             $this->setWebNotification([
-                'message' => "{$user['username']} has registered a {$sentiment->type}ish sentiment on your comment.",
+                'message' => "{$user['name']} has registered a {$sentiment->type}ish sentiment on your comment.",
                 'data' => [
                     'comment' => $event->sentimentable_data,
                     'sentiment' => [

@@ -31,7 +31,7 @@ class MentionNotification implements ShouldQueue
 
         if ($tagged_users) {
             $data = [
-                'message' => "{$user['username']} has mentioned you.",
+                'message' => "{$user['name']} has mentioned you.",
                 'data' => [
                     'comment' => [
                         'id' => $comment->id,

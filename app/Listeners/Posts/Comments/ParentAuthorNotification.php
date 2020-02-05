@@ -30,11 +30,11 @@ class ParentAuthorNotification implements ShouldQueue
 
         if ($comment->parent_id) {
             $event = 'comment.comment';
-            $message = "{$user['username']} replied to your comment.";
+            $message = "{$user['name']} replied to your comment.";
             $user_id = $comment->parentComment->user_id;
         } else {
             $event = 'post.comment';
-            $message = "{$user['username']} commented on your post.";
+            $message = "{$user['name']} commented on your post.";
             $user_id = $comment->post->user_id;
         }
 

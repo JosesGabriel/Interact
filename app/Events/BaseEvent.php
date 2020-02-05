@@ -21,6 +21,7 @@ class BaseEvent
     {
         $this->request_user = array_merge([
             'uuid' => '',
+            'name' => 'Lydian User',
             'username' => 'Lydian User',
             'profile_image' => '',
         ], (request('_user') ?? []));

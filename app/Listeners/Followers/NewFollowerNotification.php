@@ -28,7 +28,7 @@ class NewFollowerNotification implements ShouldQueue
         $follower = $event->follower;
         $user = $event->request_user;
         $data = [
-            'message' => "{$user['username']} followed you.",
+            'message' => "{$user['name']} followed you.",
             'data' => [
                 'follower' => [
                     'id' => $follower->follower_id,
