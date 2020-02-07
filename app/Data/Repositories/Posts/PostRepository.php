@@ -132,7 +132,13 @@ class PostRepository extends BaseRepository
                         ->with([
                             'bears',
                             'bulls',
-                            'comments',
+                            'comments' => function ($query) {
+                                $query->with([
+                                    'mySentiment' => function ($query) {
+                                        $query->where('user_id', request('user_id'));
+                                    },
+                                ]);
+                            },
                             'mySentiment' => function ($query) {
                                 $query->where('user_id', request('user_id'));
                             },
@@ -199,7 +205,13 @@ class PostRepository extends BaseRepository
                         ->with([
                             'bears',
                             'bulls',
-                            'comments',
+                            'comments' => function ($query) {
+                                $query->with([
+                                    'mySentiment' => function ($query) {
+                                        $query->where('user_id', request('user_id'));
+                                    },
+                                ]);
+                            },
                             'mySentiment' => function ($query) {
                                 $query->where('user_id', request('user_id'));
                             },
