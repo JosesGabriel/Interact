@@ -133,11 +133,16 @@ class PostRepository extends BaseRepository
                             'bears',
                             'bulls',
                             'comments' => function ($query) {
-                                $query->with([
-                                    'mySentiment' => function ($query) {
-                                        $query->where('user_id', request('user_id'));
-                                    },
-                                ]);
+                                $query
+                                    ->with([
+                                        'mySentiment' => function ($query) {
+                                            $query->where('user_id', request('user_id'));
+                                        },
+                                    ])
+                                    ->withCount([
+                                        'bears',
+                                        'bulls',
+                                    ]);
                             },
                             'mySentiment' => function ($query) {
                                 $query->where('user_id', request('user_id'));
@@ -206,11 +211,16 @@ class PostRepository extends BaseRepository
                             'bears',
                             'bulls',
                             'comments' => function ($query) {
-                                $query->with([
-                                    'mySentiment' => function ($query) {
-                                        $query->where('user_id', request('user_id'));
-                                    },
-                                ]);
+                                $query
+                                    ->with([
+                                        'mySentiment' => function ($query) {
+                                            $query->where('user_id', request('user_id'));
+                                        },
+                                    ])
+                                    ->withCount([
+                                        'bears',
+                                        'bulls',
+                                    ]);
                             },
                             'mySentiment' => function ($query) {
                                 $query->where('user_id', request('user_id'));
