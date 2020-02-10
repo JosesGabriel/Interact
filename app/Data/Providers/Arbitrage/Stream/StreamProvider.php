@@ -33,7 +33,11 @@ class StreamProvider extends BaseProvider
     public function handle(array $config, array $data = [])
     {
         $url = $this->generateUrlFromConfig($config, $data);
-        $this->request_client->addHeader('content-type', 'application/json');
+        $this->request_client->setHeaders([
+            'content-type' => 'application/json',
+            'M-Lyduz-Target-ID' => $this->client_id,
+            'M-Lyduz-Target-Secret' => $this->client_secret,
+        ]);
         $this->request_client->setOptions([
             \GuzzleHttp\RequestOptions::JSON => $data,
         ]);
