@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Data\Providers\Arbitrage\Gateway\GatewayProvider;
+use App\Data\Providers\Arbitrage\Stream\StreamProvider;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -35,14 +35,14 @@ class SendWebNotification implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param GatewayProvider $gatewayProvider
+     * @param StreamProvider $streamProvider
      * @return void
      * @throws \Arbitrage\Exceptions\ProviderException
      */
-    public function handle(GatewayProvider $gatewayProvider)
+    public function handle(StreamProvider $streamProvider)
     {
-        $gatewayProvider->handle([
-            'uri' => '/api/stream/v1/sse/notify',
+        $streamProvider->handle([
+            'uri' => '/api/v1/sse/notify',
             'method' => 'POST',
         ], $this->payload);
     }
