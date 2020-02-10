@@ -132,7 +132,18 @@ class PostRepository extends BaseRepository
                         ->with([
                             'bears',
                             'bulls',
-                            'comments',
+                            'comments' => function ($query) {
+                                $query
+                                    ->with([
+                                        'mySentiment' => function ($query) {
+                                            $query->where('user_id', request('user_id'));
+                                        },
+                                    ])
+                                    ->withCount([
+                                        'bears',
+                                        'bulls',
+                                    ]);
+                            },
                             'mySentiment' => function ($query) {
                                 $query->where('user_id', request('user_id'));
                             },
@@ -156,6 +167,7 @@ class PostRepository extends BaseRepository
                 'bears',
                 'bulls',
                 'comments',
+                'commentDescendants',
             ])
             ->find($id);
 
@@ -198,7 +210,18 @@ class PostRepository extends BaseRepository
                         ->with([
                             'bears',
                             'bulls',
-                            'comments',
+                            'comments' => function ($query) {
+                                $query
+                                    ->with([
+                                        'mySentiment' => function ($query) {
+                                            $query->where('user_id', request('user_id'));
+                                        },
+                                    ])
+                                    ->withCount([
+                                        'bears',
+                                        'bulls',
+                                    ]);
+                            },
                             'mySentiment' => function ($query) {
                                 $query->where('user_id', request('user_id'));
                             },
@@ -222,6 +245,7 @@ class PostRepository extends BaseRepository
                 'bears',
                 'bulls',
                 'comments',
+                'commentDescendants',
             ]);
 
         //region Data filter
