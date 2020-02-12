@@ -211,20 +211,20 @@ class TrendingRepository extends BaseRepository
             unset($user_counter[$data['user_id']]);
 
             foreach ($user_counter as $key => $value) {
-                $post_stocks = $this->follower->where([['user_id', "=", $data['user_id']],['follower_id', "=", $key]])->get()->toArray();
+                $post_stocks = $this->follower->where([['user_id', "=", $key],['follower_id', "=", $data['user_id']]])->get()->toArray();
                 if(!empty($post_stocks)){
                     unset($user_counter[$key]);
                 }
             }
         }
 
-        $final_list = array_slice($user_counter, 0, $limit);
+        // $final_list = array_slice($user_counter, 0, $limit);
 
         return $this->setResponse([
             'status' => 200,
             'message' => 'Successfully fetched Suggested Users.',
             'data' => [
-                'users' => $final_list
+                'users' => $user_counter
             ],
         ]);
     }
