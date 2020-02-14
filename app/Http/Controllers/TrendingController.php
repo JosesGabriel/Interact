@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\BaseController;
 use App\Services\TrendingService;
+use App\Services\Users\FollowingService;
+use App\Services\Users\FollowerService;
 use Illuminate\Http\Request;
 
 class TrendingController extends BaseController
@@ -30,4 +32,28 @@ class TrendingController extends BaseController
 
         return $this->absorb($response)->respond();
     }
+
+    public function following(
+        Request $request,
+        FollowingService $followingservice
+    )
+    {
+        $data = $request->all();
+        $response = $followingservice->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+    public function followers(
+        Request $request,
+        FollowerService $followerservice
+    )
+    {
+        $data = $request->all();
+        $response = $followerservice->handle($data);
+
+        return $this->absorb($response)->respond();
+    }
+
+
 }
