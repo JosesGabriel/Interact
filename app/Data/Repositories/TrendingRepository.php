@@ -228,5 +228,15 @@ class TrendingRepository extends BaseRepository
             ],
         ]);
     }
+
+    public function getFollowing($user_id)
+    {
+        return $this->follower->where('follower_id', "=", $user_id)->get()->toArray();
+    }
+
+    public function getFollowers($user_id)
+    {
+        return $this->follower->where('user_id', "=", $user_id)->get()->toArray();
+    }
     
 }
