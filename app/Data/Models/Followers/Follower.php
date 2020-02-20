@@ -85,26 +85,28 @@ class Follower extends BaseModel
      */
     public function scopeProfile($query, $user_id)
     {
-        return $query->addSelect([
-            'followers' => function ($subquery) use ($user_id) {
-                $subquery
-                    ->selectRaw('count(*)')
-                    ->from('followers')
-                    ->where('user_id', $user_id);
-            },
-            'following' => function ($subquery) use ($user_id) {
-                $subquery
-                    ->selectRaw('count(*)')
-                    ->from('followers')
-                    ->where('follower_id', $user_id);
-            },
-            'posts' => function ($subquery) use ($user_id) {
-                $subquery
-                    ->selectRaw('count(*)')
-                    ->from('posts')
-                    ->where('user_id', $user_id);
-            },
-        ]);
+        return $query
+            ->where('user_id', $user_id)
+            ->addSelect([
+                'followers' => function ($subquery) use ($user_id) {
+                    $subquery
+                        ->selectRaw('count(*)')
+                        ->from('followers')
+                        ->where('user_id', $user_id);
+                },
+                'following' => function ($subquery) use ($user_id) {
+                    $subquery
+                        ->selectRaw('count(*)')
+                        ->from('followers')
+                        ->where('follower_id', $user_id);
+                },
+                'posts' => function ($subquery) use ($user_id) {
+                    $subquery
+                        ->selectRaw('count(*)')
+                        ->from('posts')
+                        ->where('user_id', $user_id);
+                },
+            ]);
     }
     //endregion Scopes
 }
