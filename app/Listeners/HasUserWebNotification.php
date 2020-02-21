@@ -62,6 +62,7 @@ trait HasUserWebNotification
         $this->webNotification['message'] = $data['message'] ?? '';
         $this->webNotification['meta'] = $data['data'] ?? [];
         $this->webNotification['recipient_id'] = $channel;
+        $this->webNotification['type'] = $event ?? 'social';
         $this->webNotification['_web_notification'] = [
             'data' => $data['data'] ?? [],
             'event' => $event,
