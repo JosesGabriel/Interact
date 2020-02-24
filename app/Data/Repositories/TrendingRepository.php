@@ -90,7 +90,7 @@ class TrendingRepository extends BaseRepository
         // init vals 
         $stocks = []; // list of stocks
         
-        $trending_days = 3;
+        $trending_days = 80;
         $limit = (isset($data['count']) ? $data['count'] : 5);
         // $limit = 20;
 
@@ -105,8 +105,6 @@ class TrendingRepository extends BaseRepository
                 }
             }
         }
-
-        
 
         // comment and reply tags
         $comment_stocks = $this->comments_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
@@ -134,18 +132,59 @@ class TrendingRepository extends BaseRepository
             $final_stock_list[$sidebase]++;
         }
 
-        array_multisort($final_stock_list, SORT_DESC); // get list of trending stocks
-        
-
+       
         $response = $this->data_provider->handle([
-            'uri' => "/v2/stocks/history/latest?exchange=PSE&type=stock",
+            'uri' => "/v2/stocks/history/latest?exchange=PSE",
             "method" => "POST"
         ], [])->getResponse();
 
+        $sentiment_info = $this->chart_sentiment_model->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
+        
+        $senti_stocks = [];
+        foreach ($sentiment_info as $key => $value) {
+            array_push($senti_stocks, $value['stock_id']);
+        }
+        $senti_stocks = array_unique($senti_stocks);
+
+        $stock_counter = [];
+        foreach ($senti_stocks as $key => $value) {
+            $stock_counter[$value] = 0;
+        }
+
+        foreach ($sentiment_info as $key => $value) {
+            $stock_counter[$value['stock_id']]++;
+        }
+        arsort($stock_counter);
+
+        // add post values
+        $base_info = [];
+        foreach($stock_counter as $key => $value){
+            $array_key = array_search($key, array_column($response['data'], 'stockid'));
+            if($array_key !== false){
+                $res_id = $response['data'][$array_key];
+                if($res_id->symbol != "PSEI"){
+                    $from_post = 0;
+                    if(array_key_exists($res_id->symbol, $final_stock_list)){
+                        $from_post = $final_stock_list[$res_id->symbol];
+                    }
+                    $base_info[$res_id->symbol] = $value + $from_post;
+                }
+            }
+        }
+
+        // insert post value
+        foreach ($final_stock_list as $key => $value) {
+            if(!array_key_exists($key, $base_info)){
+                $base_info[$key] = $value;
+            }
+        }
+
+        array_multisort($base_info, SORT_DESC); // get list of trending stocks
+        
         $stock_information = [];
         $counter = 0;
 
-        foreach ($final_stock_list as $key => $value) {
+        foreach ($base_info as $key => $value) {
             $trendinfo = [];
             
             $array_key = array_search($key, array_column($response['data'], 'symbol'));
@@ -163,8 +202,14 @@ class TrendingRepository extends BaseRepository
             if($counter == $limit){
                 break;
             }
-            
         }
+
+        // foreach ($stock_information as $key => $value) {
+        //     dump($value['stock_id']);
+        //     $sentiment_info = $this->chart_sentiment_model->where("stock_id", "=", $value['stock_id'])->get()->toArray();
+        //     dump($sentiment_info);
+        // }
+        // dump($final_stock_list);
 
         return $this->setResponse([
             'status' => 200,
