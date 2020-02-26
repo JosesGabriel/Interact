@@ -196,7 +196,7 @@ class TrendingRepository extends BaseRepository
                 
                 $trendinfo['stock_id'] = $data_info->id_str;
                 $trendinfo['market_code'] = $data_info->market_code;
-                $trendinfo['description'] = $data_info->display_name;
+                $trendinfo['description'] = $data_info->description;
                 $trendinfo['hits'] = $value;
 
                 array_push($stock_information, $trendinfo);
