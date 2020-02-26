@@ -90,7 +90,7 @@ class TrendingRepository extends BaseRepository
         // init vals 
         $stocks = []; // list of stocks
         
-        $trending_days = 5;
+        $trending_days = 150;
         $limit = (isset($data['count']) ? $data['count'] : 5);
         // $limit = 20;
 
@@ -134,9 +134,11 @@ class TrendingRepository extends BaseRepository
 
        
         $response = $this->data_provider->handle([
-            'uri' => "/v2/stocks/history/latest?exchange=PSE",
+            'uri' => "/v2/stocks/list",
             "method" => "POST"
         ], [])->getResponse();
+        $response['data'] = array_values($response['data']);
+        // dd($response['data']);
 
         $sentiment_info = $this->chart_sentiment_model->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
         
@@ -159,7 +161,7 @@ class TrendingRepository extends BaseRepository
         // add post values
         $base_info = [];
         foreach($stock_counter as $key => $value){
-            $array_key = array_search($key, array_column($response['data'], 'stockid'));
+            $array_key = array_search($key, array_column($response['data'], 'id'));
             if($array_key !== false){
                 $res_id = $response['data'][$array_key];
                 if($res_id->symbol != "PSEI"){
@@ -171,6 +173,7 @@ class TrendingRepository extends BaseRepository
                 }
             }
         }
+
 
         // insert post value
         foreach ($final_stock_list as $key => $value) {
@@ -191,9 +194,9 @@ class TrendingRepository extends BaseRepository
             if(!empty($array_key)){
                 $data_info = $response['data'][$array_key];
                 
-                $trendinfo['stock_id'] = $data_info->stockidstr;
+                $trendinfo['stock_id'] = $data_info->id_str;
                 $trendinfo['market_code'] = $data_info->market_code;
-                $trendinfo['description'] = $data_info->description;
+                $trendinfo['description'] = $data_info->display_name;
                 $trendinfo['hits'] = $value;
 
                 array_push($stock_information, $trendinfo);
