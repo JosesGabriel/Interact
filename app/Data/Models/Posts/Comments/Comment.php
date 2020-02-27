@@ -31,6 +31,7 @@ class Comment extends BaseModel
 
     protected $casts = [
         'id' => 'string',
+        'meta' => 'array',
         'post_id' => 'string',
         'parent_id' => 'string',
     ];
@@ -40,6 +41,7 @@ class Comment extends BaseModel
         'parent_id',
         'user_id',
         'content',
+        'meta',
     ];
 
     protected $hidden = [];
@@ -49,6 +51,7 @@ class Comment extends BaseModel
         'parent_id' => 'sometimes|required',
         'user_id' => 'sometimes|required',
         'content' => 'sometimes|required',
+        'meta' => 'sometimes|json|nullable',
     ];
     //endregion Configs
 
