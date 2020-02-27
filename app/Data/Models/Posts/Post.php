@@ -49,7 +49,7 @@ class Post extends BaseModel
     protected $rules = [
         'user_id' => 'sometimes|required',
         'content' => 'sometimes|nullable',
-        'meta' => 'sometimes|nullable',
+        'meta' => 'sometimes|array|nullable',
         'status' => 'sometimes|required',
         'visibility' => 'sometimes|required',
     ];

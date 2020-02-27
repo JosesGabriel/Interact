@@ -51,7 +51,7 @@ class Comment extends BaseModel
         'parent_id' => 'sometimes|required',
         'user_id' => 'sometimes|required',
         'content' => 'sometimes|required',
-        'meta' => 'sometimes|json|nullable',
+        'meta' => 'sometimes|array|nullable',
     ];
     //endregion Configs
 
