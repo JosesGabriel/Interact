@@ -31,6 +31,7 @@ class Post extends BaseModel
 
     protected $casts = [
         'id' => 'string',
+        'meta' => 'array',
     ];
 
     protected $fillable = [
@@ -38,6 +39,7 @@ class Post extends BaseModel
         'wall_id',
         'wall_type',
         'content',
+        'meta',
         'status',
         'visibility',
     ];
@@ -47,6 +49,7 @@ class Post extends BaseModel
     protected $rules = [
         'user_id' => 'sometimes|required',
         'content' => 'sometimes|nullable',
+        'meta' => 'sometimes|nullable',
         'status' => 'sometimes|required',
         'visibility' => 'sometimes|required',
     ];
