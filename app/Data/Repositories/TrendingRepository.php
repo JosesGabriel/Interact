@@ -90,7 +90,7 @@ class TrendingRepository extends BaseRepository
         // init vals 
         $stocks = []; // list of stocks
         
-        $trending_days = 150;
+        $trending_days = 3;
         $limit = (isset($data['count']) ? $data['count'] : 5);
         // $limit = 20;
 
