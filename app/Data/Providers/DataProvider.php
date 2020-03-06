@@ -21,9 +21,9 @@ class DataProvider extends BaseProvider
         parent::__construct();
 
         // ask data from carl
-        $this->base_url = env('GATEWAY_API_URL')."/api/data";
-        // $this->client_id = env('JOURNAL_API_CLIENT_ID');
-        // $this->client_secret = env('JOURNAL_API_CLIENT_SECRET');
+        $this->base_url = env('DATA_API_URL')."/api";
+        $this->client_id = env('DATA_API_CLIENT_ID');
+        $this->client_secret = env('DATA_API_CLIENT_SECRET');
 
 
     }
@@ -36,9 +36,16 @@ class DataProvider extends BaseProvider
      */
     public function handle(array $config, array $data = [])
     {
+        $config['method'] = 'GET';
         $url = $this->generateUrlFromConfig($config, $data);
-        $response = $this->requestWithBearerToken(request()->bearerToken())->requestWithClientCreds($data)->request($url, $config['method']);
-
+        
+        $this->request_client->setHeaders([
+            // 'content-type' => 'application/json',
+            'M-Lyduz-Target-ID' => $this->client_id,
+            'M-Lyduz-Target-Secret' => $this->client_secret,
+        ]);
+       
+        $response = $this->request($url, $config['method']);
         return $this->absorbOwnApiResponse($response);
     }
 }

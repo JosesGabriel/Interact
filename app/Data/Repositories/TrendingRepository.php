@@ -134,8 +134,7 @@ class TrendingRepository extends BaseRepository
 
        
         $response = $this->data_provider->handle([
-            'uri' => "/v2/stocks/list?exchange=PSE",
-            "method" => "POST"
+            'uri' => "/v2/stocks/list?exchange=PSE"
         ], [])->getResponse();
         $response['data'] = array_values($response['data']);
         // dd($response['data']);
