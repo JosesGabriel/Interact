@@ -34,6 +34,9 @@ class AuthorSentimentNotification implements ShouldQueue
                 'message' => "{$user['name']} has registered a {$sentiment->type}ish sentiment on your comment.",
                 'data' => [
                     'comment' => $event->sentimentable_data,
+                    'post' => [
+                        'id' => $event->sentimentable->post_id,
+                    ],
                     'sentiment' => [
                         'type' => $sentiment->type,
                     ],
