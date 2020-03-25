@@ -96,7 +96,7 @@ deploy-staging-server:
     - ssh
   script:
     - ssh -t $USER@$HOST "whoami &&
-      cd /var/www/dev-social-api.arbitrage.ph/html &&
+      cd /var/www/dev-payments-api.lyduz.com &&
       git remote prune origin &&
       git checkout master &&
       git pull origin master &&
