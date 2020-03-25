@@ -1,0 +1,117 @@
+#
+#--------------------------------------------------------------------------
+# YAML Configuration
+#--------------------------------------------------------------------------
+#
+# We are strictly implementing the Scaled Trunk-Based Development Branching Strategy in this project
+# Please read the guidelines first before proceeding.
+#
+# For changes, please contact Karl Anthony Baluyot (karl@arbitrage.ph).
+#
+
+image: lorisleiva/laravel-docker:7.4
+
+stages:
+  - compile
+  - test
+  - staging
+  - production
+
+cache:
+  paths:
+    - vendor/
+
+#--------- compile stage ---------#
+install-dependencies:
+  stage: compile
+  tags:
+    - ci
+    - cd
+    - laravel
+    - docker
+  before_script:
+    - php --version
+    - composer --version
+    - mkdir /root/.ssh
+    - cat $SSH_PRIVATE_KEY > /root/.ssh/id_rsa
+    - touch /root/.ssh/known_hosts
+    - ssh-keyscan gitlab.com >> /root/.ssh/known_hosts
+    - chmod 600 /root/.ssh/id_rsa
+    - ssh -T git@gitlab.com
+  script:
+    - git submodule init
+    - git submodule update
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - composer dump-autoload
+  environment:
+    name: test
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
+
+#--------- test stage ---------#
+run-lint:
+  stage: test
+  tags:
+    - ci
+    - cd
+    - laravel
+    - docker
+  script:
+    - phpcs --standard=PSR12 --extensions=php bootstrap
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
+
+run-unit-test:
+  stage: test
+  tags:
+    - ci
+    - cd
+    - laravel
+    - docker
+  script:
+    - cp .env.example .env
+    - php artisan key:generate
+    # - phpunit --coverage-text --colors=never
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
+
+#--------- staging stage ---------#
+deploy-staging-server:
+  stage: staging
+  tags:
+    - cd
+    - native
+    - ssh
+  script:
+    - ssh -t $USER@$HOST "whoami &&
+      cd /var/www/dev-social-api.arbitrage.ph/html &&
+      git remote prune origin &&
+      git checkout master &&
+      git pull origin master &&
+      git checkout $CI_COMMIT_SHA &&
+      git submodule init &&
+      git submodule update &&
+      composer install &&
+      composer dump-autoload &&
+      php artisan migrate &&
+      php artisan cache:clear &&
+      php artisan config:clear"
+  environment:
+    name: staging
+  only:
+    - master
+  except:
+    - merge_requests
+    - tags
