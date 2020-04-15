@@ -104,12 +104,39 @@ deploy-staging-server:
       composer install &&
       composer dump-autoload &&
       php artisan migrate &&
-      php artisan cache:clear &&
       php artisan config:clear"
   environment:
     name: staging
   only:
     - master
+  except:
+    - merge_requests
+    - tags
+
+#--------- production stage ---------#
+deploy-production-server:
+  stage: production
+  tags:
+    - cd
+    - native
+    - ssh
+  script:
+    - ssh -t $USER@$HOST "whoami &&
+      cd /var/www/social-api.lyduz.com &&
+      git remote prune origin &&
+      git checkout master &&
+      git pull &&
+      git checkout $CI_COMMIT_SHA &&
+      git submodule init &&
+      git submodule update &&
+      composer install &&
+      composer dump-autoload &&
+      php artisan migrate &&
+      php artisan config:clear"
+  environment:
+    name: production
+  only:
+    - /^release\/v.*$/
   except:
     - merge_requests
     - tags
