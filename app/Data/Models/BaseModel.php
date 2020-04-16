@@ -11,5 +11,13 @@ use Arbitrage\Abstracts\Models\EloquentModel;
  */
 class BaseModel extends EloquentModel
 {
-
+    /**
+     * BaseModel constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->setDebugMode(config('app.debug'));
+    }
 }

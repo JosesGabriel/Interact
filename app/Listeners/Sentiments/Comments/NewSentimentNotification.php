@@ -41,6 +41,9 @@ class NewSentimentNotification implements ShouldQueue
                 'message' => 'A new sentiment.',
                 'data' => [
                     'comment' => $event->sentimentable_data,
+                    'post' => [
+                        'id' => $event->sentimentable->post_id,
+                    ],
                     'sentiment' => [
                         'type' => $sentiment->type,
                     ],

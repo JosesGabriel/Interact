@@ -36,9 +36,16 @@ class DataProvider extends BaseProvider
      */
     public function handle(array $config, array $data = [])
     {
+        $config['method'] = 'GET';
         $url = $this->generateUrlFromConfig($config, $data);
-        $response = $this->requestWithBearerToken(request()->bearerToken())->requestWithClientCreds($data)->request($url, $config['method']);
-
+        
+        $this->request_client->setHeaders([
+            // 'content-type' => 'application/json',
+            'M-Lyduz-Target-ID' => $this->client_id,
+            'M-Lyduz-Target-Secret' => $this->client_secret,
+        ]);
+       
+        $response = $this->request($url, $config['method']);
         return $this->absorbOwnApiResponse($response);
     }
 }

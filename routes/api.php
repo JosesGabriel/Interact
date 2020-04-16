@@ -106,3 +106,16 @@ Route::group([
     Route::get('/', 'TrendingController@trending');
     Route::get('/users', 'TrendingController@users');
 });
+
+Route::group([
+    'prefix' => 'following',
+], function () {
+    Route::get('/', 'TrendingController@following');
+});
+
+Route::group([
+    'prefix' => 'followers',
+], function () {
+    Route::get('/', 'TrendingController@followers');
+});
+

@@ -85,96 +85,54 @@ class TrendingRepository extends BaseRepository
 
     }
 
-    public function get_trending($data)
+    /**
+     * Post with $ Tags
+     *
+     * @param   int  $trending_days  number of scoped (days)
+     *
+     * @return  array 
+     */
+    public function getPostWithTags($trending_days)
     {
-        // init vals 
-        $stocks = []; // list of stocks
-        
-        $trending_days = 182;
-        $limit = (isset($data['count']) ? $data['count'] : 5);
-        // $limit = 20;
-
-        // post tags
         $post_stocks = $this->post_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
-        foreach ($post_stocks as $key => $value) {
-            $content = $value['content'];
-            $segment_content = $this->multiexplode(array(" ","\r\n", "."),$content);
-            foreach ($segment_content as $perkey => $pervalue) {
-                if (strpos($pervalue, '$') !== false) {
-                    array_push($stocks, strtoupper($pervalue));
-                }
-            }
-        }
-
-        
-
-        // comment and reply tags
-        $comment_stocks = $this->comments_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
-        foreach ($comment_stocks as $key => $value) {
-            $content = $value['content'];
-            $segment_content = $this->multiexplode(array(" ","\r\n", "."),$content);
-            foreach ($segment_content as $perkey => $pervalue) {
-                if (strpos($pervalue, '$') !== false) {
-                    array_push($stocks, strtoupper($pervalue));
-                }
-            }
-        }
-        
-
-        // filter the stocks 
-        $final_stock_list = [];
-        $unique_stocks = array_unique($stocks);
-        foreach ($unique_stocks as $key => $value) {
-            $sidebase = str_replace("$", "", $value);
-            $final_stock_list[$sidebase] = 0;
-        }
-
-        foreach ($stocks as $key => $value) {
-            $sidebase = str_replace("$", "", $value);
-            $final_stock_list[$sidebase]++;
-        }
-
-        array_multisort($final_stock_list, SORT_DESC); // get list of trending stocks
-        
-
-        $response = $this->data_provider->handle([
-            'uri' => "/v2/stocks/history/latest?exchange=PSE&type=stock",
-            "method" => "POST"
-        ], [])->getResponse();
-
-        $stock_information = [];
-        $counter = 0;
-
-        foreach ($final_stock_list as $key => $value) {
-            $trendinfo = [];
-            
-            $array_key = array_search($key, array_column($response['data'], 'symbol'));
-            if(!empty($array_key)){
-                $data_info = $response['data'][$array_key];
-                
-                $trendinfo['stock_id'] = $data_info->stockidstr;
-                $trendinfo['market_code'] = $data_info->market_code;
-                $trendinfo['description'] = $data_info->description;
-                $trendinfo['hits'] = $value;
-
-                array_push($stock_information, $trendinfo);
-                $counter++;
-            }
-            if($counter == $limit){
-                break;
-            }
-            
-        }
-
-        return $this->setResponse([
-            'status' => 200,
-            'message' => 'Successfully fetched trending stocks.',
-            'data' => [
-                'stocks' => $stock_information
-            ],
-        ]);
+        return $post_stocks;
     }
 
+    /**
+     * Comments with $ tags
+     *
+     * @param   int  $trending_days  number of scoped (days)
+     *
+     * @return  array                  
+     */
+    public function getCommentWithTags($trending_days)
+    {
+        $comment_stocks = $this->comments_model->where("content", "like", "%$%")->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
+        return $comment_stocks;
+    }
+
+    /**
+     * get from chart sentiment
+     *
+     * @param   int  $trending_days  number of scoped (days)
+     *
+     * @return  array            
+     */
+    public function getChartSentiment($trending_days)
+    {
+        $sentiment_info = $this->chart_sentiment_model->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
+        return $sentiment_info;
+    }
+
+    /**
+     * explode with multiple delimeters 
+     *
+     * @param   array   $delimiters  list of delimeters
+     * 
+     * @param   string   $string  value to be exploded
+     * 
+     * @return  array exploded values
+     */
     public function multiexplode ($delimiters,$string) {
 
         $ready = str_replace($delimiters, $delimiters[0], $string);
@@ -182,51 +140,55 @@ class TrendingRepository extends BaseRepository
         return  $launch;
     }
 
-    public function get_users($data)
+    /**
+     * Posts Activity for n days
+     *
+     * @param   int  $trending_days  number of scoped (days)
+     *
+     * @return  array
+     */
+    public function getPostofTrending($trending_days)
     {
-        $trending_days = 90;
-        $limit = (isset($data['count']) ? $data['count'] : 5);
-        // $limit = 10;
         $post_stocks = $this->post_model->where('created_at', '>=', Carbon::now()->subDays($trending_days)->toDateTimeString())->get()->toArray();
+        return $post_stocks;
+    }
 
-        if(empty($post_stocks)){
-            return $this->setResponse([
-                'status' => 400,
-                'message' => 'No Activity for the past '.$trending_days.' days',
-                'data' => [],
-            ]);
-        }
+    /**
+     * get follower information
+     *
+     * @param   [type]  $key      [$key description]
+     * @param   [type]  $user_id  [$user_id description]
+     *
+     * @return  [type]            [return description]
+     */
+    public function getFollowerInfo($key, $user_id)
+    {
+        $post_stocks = $this->follower->where([['user_id', "=", $key],['follower_id', "=", $user_id]])->get()->toArray();
+        return $post_stocks;
+    }
 
-        $user_list = [];
-        foreach ($post_stocks as $key => $value) { array_push($user_list, $value['user_id']); }
+    /**
+     * Get Following ids
+     *
+     * @param   int  $user_id  user id
+     *
+     * @return  array            list of follower ids
+     */
+    public function getFollowing($user_id)
+    {
+        return $this->follower->where('follower_id', "=", $user_id)->get()->toArray();
+    }
 
-        $user_list_unique = array_unique($user_list);
-        $user_counter = [];
-        foreach ($user_list_unique as $key => $value) { $user_counter[$value] = 0; }
-        foreach ($user_list as $key => $value) { $user_counter[$value]++; }
-        arsort($user_counter);
-
-        // removed current user 
-        if(isset($data['user_id'])){
-            unset($user_counter[$data['user_id']]);
-
-            foreach ($user_counter as $key => $value) {
-                $post_stocks = $this->follower->where([['user_id', "=", $data['user_id']],['follower_id', "=", $key]])->get()->toArray();
-                if(!empty($post_stocks)){
-                    unset($user_counter[$key]);
-                }
-            }
-        }
-
-        $final_list = array_slice($user_counter, 0, $limit);
-
-        return $this->setResponse([
-            'status' => 200,
-            'message' => 'Successfully fetched Suggested Users.',
-            'data' => [
-                'users' => $final_list
-            ],
-        ]);
+    /**
+     * Get Followers ids    
+     *
+     * @param   int  $user_id  user id
+     *
+     * @return  array   List of Follower ids
+     */
+    public function getFollowers($user_id)
+    {
+        return $this->follower->where('user_id', "=", $user_id)->get()->toArray();
     }
     
 }
