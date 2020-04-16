@@ -44,6 +44,7 @@ class SuggestedUserService extends BaseService
         for ($i=0; $i < 100; $i++) { 
             $post_stocks = $this->trending_repo->getPostofTrending($trending_days);
 
+            // TODO: Save for future referense
             // if(empty($post_stocks)){
             //     return $this->setResponse([
             //         'status' => 400,

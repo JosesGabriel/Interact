@@ -21,9 +21,10 @@ class DataProvider extends BaseProvider
         parent::__construct();
 
         // ask data from carl
-        $this->base_url = env('GATEWAY_API_URL')."/api/data";
-        // $this->client_id = env('JOURNAL_API_CLIENT_ID');
-        // $this->client_secret = env('JOURNAL_API_CLIENT_SECRET');
+
+        $this->base_url = env('DATA_API_URL')."/api";
+        $this->client_id = env('DATA_API_CLIENT_ID');
+        $this->client_secret = env('DATA_API_CLIENT_SECRET');
 
 
     }
