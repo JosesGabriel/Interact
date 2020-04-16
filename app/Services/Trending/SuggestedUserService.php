@@ -40,37 +40,46 @@ class SuggestedUserService extends BaseService
     {
         $trending_days = 25;
         $limit = (isset($data['count']) ? $data['count'] : 5);
-
-        $post_stocks = $this->trending_repo->getPostofTrending($trending_days);
-
-        if(empty($post_stocks)){
-            return $this->setResponse([
-                'status' => 400,
-                'message' => 'No Activity for the past '.$trending_days.' days',
-                'data' => [],
-            ]);
-        }
-
-        $user_list = [];
-        foreach ($post_stocks as $key => $value) { array_push($user_list, $value['user_id']); }
-
-        $user_list_unique = array_unique($user_list);
         $user_counter = [];
-        foreach ($user_list_unique as $key => $value) { $user_counter[$value] = 0; }
-        foreach ($user_list as $key => $value) { $user_counter[$value]++; }
-        arsort($user_counter);
+        for ($i=0; $i < 100; $i++) { 
+            $post_stocks = $this->trending_repo->getPostofTrending($trending_days);
 
-        // removed current user 
-        if(isset($data['user_id'])){
-            unset($user_counter[$data['user_id']]);
+            // TODO: Save for future referense
+            // if(empty($post_stocks)){
+            //     return $this->setResponse([
+            //         'status' => 400,
+            //         'message' => 'No Activity for the past '.$trending_days.' days',
+            //         'data' => [],
+            //     ]);
+            // }
 
-            foreach ($user_counter as $key => $value) {
-                $post_stocks = $this->trending_repo->getFollowerInfo($key, $data['user_id']);
-                if(!empty($post_stocks)){
-                    unset($user_counter[$key]);
+            $user_list = [];
+            foreach ($post_stocks as $key => $value) { array_push($user_list, $value['user_id']); }
+
+            $user_list_unique = array_unique($user_list);
+            
+            foreach ($user_list_unique as $key => $value) { $user_counter[$value] = 0; }
+            foreach ($user_list as $key => $value) { $user_counter[$value]++; }
+            arsort($user_counter);
+
+            // removed current user 
+            if(isset($data['user_id'])){
+                unset($user_counter[$data['user_id']]);
+
+                foreach ($user_counter as $key => $value) {
+                    $post_stocks = $this->trending_repo->getFollowerInfo($key, $data['user_id']);
+                    if(!empty($post_stocks)){
+                        unset($user_counter[$key]);
+                    }
                 }
             }
+
+            if(!empty($user_counter)){
+                break;
+            }
+            $trending_days += 25;
         }
+        
 
         return $this->setResponse([
             'status' => 200,
