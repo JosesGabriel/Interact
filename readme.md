@@ -1,3 +1,3 @@
-## About Interact
-___
+# Interact
+
 Social Media Platform written in Laravel
